@@ -3,13 +3,16 @@ project:
   output-dir: docs
 
 website:
-  title: "Your Name - MUSA 5080 Portfolio"
+  title: "Tim Wen - MUSA 5080 Portfolio"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - href: weekly-notes/
-        text: Weekly Notes
+        menu: 
+          - href: weekly-notes
+            text: All notes
+          - href: weekly-notes/week-01-notes.qmd
+        
 
 format:
   html:
