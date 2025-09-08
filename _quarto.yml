@@ -9,9 +9,7 @@ website:
       - href: index.qmd
         text: Home
         menu: 
-          - href: weekly-notes/
-            text: All Notes
-            href: weekly-notes/week-01-notes.qmd
+          - href: weekly-notes/week-01-notes.qmd
             text: All notes
 
 format:
