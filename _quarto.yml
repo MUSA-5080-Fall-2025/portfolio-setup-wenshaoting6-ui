@@ -12,6 +12,10 @@ website:
         menu:
           - href: weekly-notes/week-01-notes.qmd
             text: Week 1
+      - text: Labs
+        menu:
+          - href: labs/lab 0/scripts/lab0_template.qmd
+            text: Lab 0
             
 format:
   html:
