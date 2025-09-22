@@ -1,76 +1,117 @@
 ---
-title: "Tim Wen Week 2 Notes - Course Introduction"
+title: "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data"
 date: "2025-09-08"
 ---
 
-What is an algorithm?
-  A set of rules or instructions for solving a problem or compkenting a task
-  Ex: Reciper for cooking
-      Direction to get somewhere
-      Decision tree for hiring
-      
-Algorithmic Decision making in government
-  Systems used to assist or replace human decision-makers
-  based on predictions from models that process historical data containing:
-  Inputs (EX:features, predictors, independent variabke, x)
-  Outputs(EX:labels, outcome, depent variavble, y)
+## What is an Algorithm?
 
-Real World ex:
- criminal justice
- housing finance
- healthcare
- tradeoff: statistical bisas: a group cannot represent an individual
-           data collection bias: data could be collected with bias
+A **set of rules or instructions** for solving a problem or completing a task.
 
-history of data collection
-  civic registeration system
-  census data
-  administrative records
-  operation research (Post WWII)
-What's new?
-  More data
-  Focus on prediction rather than explanitaiton
-  Harder to interpret and explain
+**Examples:**
+- A recipe for cooking
+- Directions to get somewhere
+- A decision tree for hiring
 
-Why gov use them
--Have limited budgets and need to serve everyone
-  Efficiency
-  Consistency
-  Objectivity
-  Cost savings
+---
 
-Every steps involve human choices
-  Data cleaning process
-  Data coding or classification
-  Data collection-use of imperfect proxies
-  How you interpret results
-  What variable you put on the model
-These choices embed human values and biases
+## Algorithmic Decision-Making in Government
 
-Healthcare Algorithm Bias
-  Systematically discriminated againest black patients
-  Problem
-    use healthcare costs as a proxy for need 
-    black patients incur lower costs due to systemic inequities in access
-    black patients under prioritized despite equivalent level of illness
+- Systems used to **assist or replace human decision-makers**
+- Based on **predictions from models** that process historical data
 
-Decennial Census vs. ACS Census
+**Key components:**
+- **Inputs (X):** features, predictors, independent variables  
+- **Outputs (Y):** labels, outcomes, dependent variables
 
-ACS 1 year
-(area>65,000 pop), most current, smallest sample
+---
 
-ACS 5 year (all areas including census tract)
-most reliable data, largest sample (MOE)
+## Real-World Applications
 
-R tidycensus
+- **Criminal justice**
+- **Housing finance**
+- **Healthcare**
 
-summary table v.s. pums (individual record)
+**Key trade-offs and issues:**
+- **Statistical bias:** A group cannot represent an individual perfectly  
+- **Data collection bias:** Data might be collected with systemic biases
 
-tiger/line files
-geographic boundaries (shapefiles)
+---
 
-historical data sources
-NHGIS-historical census data
-neightborhood change database
-lingitudinal tract database-track change over time
+## History of Government Data Collection
+
+- Civic registration systems  
+- Decennial census data  
+- Administrative records  
+- Post-WWII operations research
+
+**What’s new today:**
+- Larger quantities of data  
+- Focus on **prediction rather than explanation**  
+- Harder to interpret and explain decisions
+
+---
+
+## Why Governments Use Algorithmic Systems
+
+Governments face **limited budgets** but must serve everyone. Algorithms provide:
+
+- **Efficiency** – faster processing  
+- **Consistency** – standardizing decisions  
+- **Objectivity** – reducing individual judgment  
+- **Cost savings**
+
+---
+
+## Human Choices in Every Step
+
+Even automated systems **embed human values and biases**, including decisions about:
+
+- Data cleaning  
+- Data coding or classification  
+- Data collection (often uses imperfect proxies)  
+- Variable selection in models  
+- Interpretation of results
+
+---
+
+## Example: Healthcare Algorithm Bias
+
+**Problem:**
+- A healthcare algorithm systematically **discriminated against Black patients**.
+
+**Why it happened:**
+- The model used **healthcare costs as a proxy for need**.
+- Due to systemic inequities in access, **Black patients incurred lower costs**.
+- Result: Black patients were **under-prioritized**, even with equivalent illness levels.
+
+---
+
+## Census Data Types
+
+| Census Product      | Key Features |
+|--------------------|--------------|
+| **Decennial Census** | Conducted every 10 years; complete count of the population |
+| **ACS 1-Year Estimates** | For areas with population **>65,000**; most current data, smaller sample |
+| **ACS 5-Year Estimates** | For **all areas** (including census tracts); most reliable data, largest sample, includes MOE |
+
+---
+
+## Using Census Data in R
+
+- **`tidycensus`** package for R  
+- Two main data types:
+  - **Summary tables** (aggregated statistics)
+  - **PUMS** (Public Use Microdata Sample, individual records)
+
+**TIGER/Line files:**  
+- Provide **geographic boundaries** (shapefiles) for mapping.
+
+---
+
+## Historical Census Data Sources
+
+- **NHGIS** – Historical census data  
+- **Neighborhood Change Database (NCDB)**  
+- **Longitudinal Tract Database (LTDB)** – Tracks changes over time
+
 

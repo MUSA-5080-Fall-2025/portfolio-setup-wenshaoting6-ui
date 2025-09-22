@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-08">
 
-<title>Tim Wen Week 2 Notes - Course Introduction – Tim Wen - MUSA 5080 Portfolio</title>
+<title>Tim Wen Week 2 Notes - Algorithmic Decision Making &amp; Census Data – Tim Wen - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,15 +144,30 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-an-algorithm" id="toc-what-is-an-algorithm" class="nav-link active" data-scroll-target="#what-is-an-algorithm">What is an Algorithm?</a></li>
+  <li><a href="#algorithmic-decision-making-in-government" id="toc-algorithmic-decision-making-in-government" class="nav-link" data-scroll-target="#algorithmic-decision-making-in-government">Algorithmic Decision-Making in Government</a></li>
+  <li><a href="#real-world-applications" id="toc-real-world-applications" class="nav-link" data-scroll-target="#real-world-applications">Real-World Applications</a></li>
+  <li><a href="#history-of-government-data-collection" id="toc-history-of-government-data-collection" class="nav-link" data-scroll-target="#history-of-government-data-collection">History of Government Data Collection</a></li>
+  <li><a href="#why-governments-use-algorithmic-systems" id="toc-why-governments-use-algorithmic-systems" class="nav-link" data-scroll-target="#why-governments-use-algorithmic-systems">Why Governments Use Algorithmic Systems</a></li>
+  <li><a href="#human-choices-in-every-step" id="toc-human-choices-in-every-step" class="nav-link" data-scroll-target="#human-choices-in-every-step">Human Choices in Every Step</a></li>
+  <li><a href="#example-healthcare-algorithm-bias" id="toc-example-healthcare-algorithm-bias" class="nav-link" data-scroll-target="#example-healthcare-algorithm-bias">Example: Healthcare Algorithm Bias</a></li>
+  <li><a href="#census-data-types" id="toc-census-data-types" class="nav-link" data-scroll-target="#census-data-types">Census Data Types</a></li>
+  <li><a href="#using-census-data-in-r" id="toc-using-census-data-in-r" class="nav-link" data-scroll-target="#using-census-data-in-r">Using Census Data in R</a></li>
+  <li><a href="#historical-census-data-sources" id="toc-historical-census-data-sources" class="nav-link" data-scroll-target="#historical-census-data-sources">Historical Census Data Sources</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tim Wen Week 2 Notes - Course Introduction</h1>
+<h1 class="title">Tim Wen Week 2 Notes - Algorithmic Decision Making &amp; Census Data</h1>
 </div>
 
 
@@ -175,22 +190,142 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>What is an algorithm? A set of rules or instructions for solving a problem or compkenting a task Ex: Reciper for cooking Direction to get somewhere Decision tree for hiring</p>
-<p>Algorithmic Decision making in government Systems used to assist or replace human decision-makers based on predictions from models that process historical data containing: Inputs (EX:features, predictors, independent variabke, x) Outputs(EX:labels, outcome, depent variavble, y)</p>
-<p>Real World ex: criminal justice housing finance healthcare tradeoff: statistical bisas: a group cannot represent an individual data collection bias: data could be collected with bias</p>
-<p>history of data collection civic registeration system census data administrative records operation research (Post WWII) What’s new? More data Focus on prediction rather than explanitaiton Harder to interpret and explain</p>
-<p>Why gov use them -Have limited budgets and need to serve everyone Efficiency Consistency Objectivity Cost savings</p>
-<p>Every steps involve human choices Data cleaning process Data coding or classification Data collection-use of imperfect proxies How you interpret results What variable you put on the model These choices embed human values and biases</p>
-<p>Healthcare Algorithm Bias Systematically discriminated againest black patients Problem use healthcare costs as a proxy for need black patients incur lower costs due to systemic inequities in access black patients under prioritized despite equivalent level of illness</p>
-<p>Decennial Census vs.&nbsp;ACS Census</p>
-<p>ACS 1 year (area&gt;65,000 pop), most current, smallest sample</p>
-<p>ACS 5 year (all areas including census tract) most reliable data, largest sample (MOE)</p>
-<p>R tidycensus</p>
-<p>summary table v.s. pums (individual record)</p>
-<p>tiger/line files geographic boundaries (shapefiles)</p>
-<p>historical data sources NHGIS-historical census data neightborhood change database lingitudinal tract database-track change over time</p>
+<section id="what-is-an-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-an-algorithm">What is an Algorithm?</h2>
+<p>A <strong>set of rules or instructions</strong> for solving a problem or completing a task.</p>
+<p><strong>Examples:</strong> - A recipe for cooking - Directions to get somewhere - A decision tree for hiring</p>
+<hr>
+</section>
+<section id="algorithmic-decision-making-in-government" class="level2">
+<h2 class="anchored" data-anchor-id="algorithmic-decision-making-in-government">Algorithmic Decision-Making in Government</h2>
+<ul>
+<li>Systems used to <strong>assist or replace human decision-makers</strong></li>
+<li>Based on <strong>predictions from models</strong> that process historical data</li>
+</ul>
+<p><strong>Key components:</strong> - <strong>Inputs (X):</strong> features, predictors, independent variables<br>
+- <strong>Outputs (Y):</strong> labels, outcomes, dependent variables</p>
+<hr>
+</section>
+<section id="real-world-applications" class="level2">
+<h2 class="anchored" data-anchor-id="real-world-applications">Real-World Applications</h2>
+<ul>
+<li><strong>Criminal justice</strong></li>
+<li><strong>Housing finance</strong></li>
+<li><strong>Healthcare</strong></li>
+</ul>
+<p><strong>Key trade-offs and issues:</strong> - <strong>Statistical bias:</strong> A group cannot represent an individual perfectly<br>
+- <strong>Data collection bias:</strong> Data might be collected with systemic biases</p>
+<hr>
+</section>
+<section id="history-of-government-data-collection" class="level2">
+<h2 class="anchored" data-anchor-id="history-of-government-data-collection">History of Government Data Collection</h2>
+<ul>
+<li>Civic registration systems<br>
+</li>
+<li>Decennial census data<br>
+</li>
+<li>Administrative records<br>
+</li>
+<li>Post-WWII operations research</li>
+</ul>
+<p><strong>What’s new today:</strong> - Larger quantities of data<br>
+- Focus on <strong>prediction rather than explanation</strong><br>
+- Harder to interpret and explain decisions</p>
+<hr>
+</section>
+<section id="why-governments-use-algorithmic-systems" class="level2">
+<h2 class="anchored" data-anchor-id="why-governments-use-algorithmic-systems">Why Governments Use Algorithmic Systems</h2>
+<p>Governments face <strong>limited budgets</strong> but must serve everyone. Algorithms provide:</p>
+<ul>
+<li><strong>Efficiency</strong> – faster processing<br>
+</li>
+<li><strong>Consistency</strong> – standardizing decisions<br>
+</li>
+<li><strong>Objectivity</strong> – reducing individual judgment<br>
+</li>
+<li><strong>Cost savings</strong></li>
+</ul>
+<hr>
+</section>
+<section id="human-choices-in-every-step" class="level2">
+<h2 class="anchored" data-anchor-id="human-choices-in-every-step">Human Choices in Every Step</h2>
+<p>Even automated systems <strong>embed human values and biases</strong>, including decisions about:</p>
+<ul>
+<li>Data cleaning<br>
+</li>
+<li>Data coding or classification<br>
+</li>
+<li>Data collection (often uses imperfect proxies)<br>
+</li>
+<li>Variable selection in models<br>
+</li>
+<li>Interpretation of results</li>
+</ul>
+<hr>
+</section>
+<section id="example-healthcare-algorithm-bias" class="level2">
+<h2 class="anchored" data-anchor-id="example-healthcare-algorithm-bias">Example: Healthcare Algorithm Bias</h2>
+<p><strong>Problem:</strong> - A healthcare algorithm systematically <strong>discriminated against Black patients</strong>.</p>
+<p><strong>Why it happened:</strong> - The model used <strong>healthcare costs as a proxy for need</strong>. - Due to systemic inequities in access, <strong>Black patients incurred lower costs</strong>. - Result: Black patients were <strong>under-prioritized</strong>, even with equivalent illness levels.</p>
+<hr>
+</section>
+<section id="census-data-types" class="level2">
+<h2 class="anchored" data-anchor-id="census-data-types">Census Data Types</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 58%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Census Product</th>
+<th>Key Features</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Decennial Census</strong></td>
+<td>Conducted every 10 years; complete count of the population</td>
+</tr>
+<tr class="even">
+<td><strong>ACS 1-Year Estimates</strong></td>
+<td>For areas with population <strong>&gt;65,000</strong>; most current data, smaller sample</td>
+</tr>
+<tr class="odd">
+<td><strong>ACS 5-Year Estimates</strong></td>
+<td>For <strong>all areas</strong> (including census tracts); most reliable data, largest sample, includes MOE</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="using-census-data-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="using-census-data-in-r">Using Census Data in R</h2>
+<ul>
+<li><strong><code>tidycensus</code></strong> package for R<br>
+</li>
+<li>Two main data types:
+<ul>
+<li><strong>Summary tables</strong> (aggregated statistics)</li>
+<li><strong>PUMS</strong> (Public Use Microdata Sample, individual records)</li>
+</ul></li>
+</ul>
+<p><strong>TIGER/Line files:</strong><br>
+- Provide <strong>geographic boundaries</strong> (shapefiles) for mapping.</p>
+<hr>
+</section>
+<section id="historical-census-data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="historical-census-data-sources">Historical Census Data Sources</h2>
+<ul>
+<li><strong>NHGIS</strong> – Historical census data<br>
+</li>
+<li><strong>Neighborhood Change Database (NCDB)</strong><br>
+</li>
+<li><strong>Longitudinal Tract Database (LTDB)</strong> – Tracks changes over time</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
