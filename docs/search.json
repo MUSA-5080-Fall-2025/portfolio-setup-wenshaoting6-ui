@@ -1,77 +1,77 @@
 [
   {
-    "objectID": "weekly-notes/week-02-notes.html",
-    "href": "weekly-notes/week-02-notes.html",
+    "objectID": "weekly-notes/week-02-notes1.html",
+    "href": "weekly-notes/week-02-notes1.html",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "",
     "text": "A set of rules or instructions for solving a problem or completing a task.\nExamples: - A recipe for cooking - Directions to get somewhere - A decision tree for hiring"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#what-is-an-algorithm",
-    "href": "weekly-notes/week-02-notes.html#what-is-an-algorithm",
+    "objectID": "weekly-notes/week-02-notes1.html#what-is-an-algorithm",
+    "href": "weekly-notes/week-02-notes1.html#what-is-an-algorithm",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "",
     "text": "A set of rules or instructions for solving a problem or completing a task.\nExamples: - A recipe for cooking - Directions to get somewhere - A decision tree for hiring"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#algorithmic-decision-making-in-government",
-    "href": "weekly-notes/week-02-notes.html#algorithmic-decision-making-in-government",
+    "objectID": "weekly-notes/week-02-notes1.html#algorithmic-decision-making-in-government",
+    "href": "weekly-notes/week-02-notes1.html#algorithmic-decision-making-in-government",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Algorithmic Decision-Making in Government",
     "text": "Algorithmic Decision-Making in Government\n\nSystems used to assist or replace human decision-makers\nBased on predictions from models that process historical data\n\nKey components: - Inputs (X): features, predictors, independent variables\n- Outputs (Y): labels, outcomes, dependent variables"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#real-world-applications",
-    "href": "weekly-notes/week-02-notes.html#real-world-applications",
+    "objectID": "weekly-notes/week-02-notes1.html#real-world-applications",
+    "href": "weekly-notes/week-02-notes1.html#real-world-applications",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Real-World Applications",
     "text": "Real-World Applications\n\nCriminal justice\nHousing finance\nHealthcare\n\nKey trade-offs and issues: - Statistical bias: A group cannot represent an individual perfectly\n- Data collection bias: Data might be collected with systemic biases"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#history-of-government-data-collection",
-    "href": "weekly-notes/week-02-notes.html#history-of-government-data-collection",
+    "objectID": "weekly-notes/week-02-notes1.html#history-of-government-data-collection",
+    "href": "weekly-notes/week-02-notes1.html#history-of-government-data-collection",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "History of Government Data Collection",
     "text": "History of Government Data Collection\n\nCivic registration systems\n\nDecennial census data\n\nAdministrative records\n\nPost-WWII operations research\n\nWhat’s new today: - Larger quantities of data\n- Focus on prediction rather than explanation\n- Harder to interpret and explain decisions"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#why-governments-use-algorithmic-systems",
-    "href": "weekly-notes/week-02-notes.html#why-governments-use-algorithmic-systems",
+    "objectID": "weekly-notes/week-02-notes1.html#why-governments-use-algorithmic-systems",
+    "href": "weekly-notes/week-02-notes1.html#why-governments-use-algorithmic-systems",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Why Governments Use Algorithmic Systems",
     "text": "Why Governments Use Algorithmic Systems\nGovernments face limited budgets but must serve everyone. Algorithms provide:\n\nEfficiency – faster processing\n\nConsistency – standardizing decisions\n\nObjectivity – reducing individual judgment\n\nCost savings"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#human-choices-in-every-step",
-    "href": "weekly-notes/week-02-notes.html#human-choices-in-every-step",
+    "objectID": "weekly-notes/week-02-notes1.html#human-choices-in-every-step",
+    "href": "weekly-notes/week-02-notes1.html#human-choices-in-every-step",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Human Choices in Every Step",
     "text": "Human Choices in Every Step\nEven automated systems embed human values and biases, including decisions about:\n\nData cleaning\n\nData coding or classification\n\nData collection (often uses imperfect proxies)\n\nVariable selection in models\n\nInterpretation of results"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#example-healthcare-algorithm-bias",
-    "href": "weekly-notes/week-02-notes.html#example-healthcare-algorithm-bias",
+    "objectID": "weekly-notes/week-02-notes1.html#example-healthcare-algorithm-bias",
+    "href": "weekly-notes/week-02-notes1.html#example-healthcare-algorithm-bias",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Example: Healthcare Algorithm Bias",
     "text": "Example: Healthcare Algorithm Bias\nProblem: - A healthcare algorithm systematically discriminated against Black patients.\nWhy it happened: - The model used healthcare costs as a proxy for need. - Due to systemic inequities in access, Black patients incurred lower costs. - Result: Black patients were under-prioritized, even with equivalent illness levels."
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#census-data-types",
-    "href": "weekly-notes/week-02-notes.html#census-data-types",
+    "objectID": "weekly-notes/week-02-notes1.html#census-data-types",
+    "href": "weekly-notes/week-02-notes1.html#census-data-types",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Census Data Types",
     "text": "Census Data Types\n\n\n\n\n\n\n\nCensus Product\nKey Features\n\n\n\n\nDecennial Census\nConducted every 10 years; complete count of the population\n\n\nACS 1-Year Estimates\nFor areas with population &gt;65,000; most current data, smaller sample\n\n\nACS 5-Year Estimates\nFor all areas (including census tracts); most reliable data, largest sample, includes MOE"
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#using-census-data-in-r",
-    "href": "weekly-notes/week-02-notes.html#using-census-data-in-r",
+    "objectID": "weekly-notes/week-02-notes1.html#using-census-data-in-r",
+    "href": "weekly-notes/week-02-notes1.html#using-census-data-in-r",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Using Census Data in R",
     "text": "Using Census Data in R\n\ntidycensus package for R\n\nTwo main data types:\n\nSummary tables (aggregated statistics)\nPUMS (Public Use Microdata Sample, individual records)\n\n\nTIGER/Line files:\n- Provide geographic boundaries (shapefiles) for mapping."
   },
   {
-    "objectID": "weekly-notes/week-02-notes.html#historical-census-data-sources",
-    "href": "weekly-notes/week-02-notes.html#historical-census-data-sources",
+    "objectID": "weekly-notes/week-02-notes1.html#historical-census-data-sources",
+    "href": "weekly-notes/week-02-notes1.html#historical-census-data-sources",
     "title": "Tim Wen Week 2 Notes - Algorithmic Decision Making & Census Data",
     "section": "Historical Census Data Sources",
     "text": "Historical Census Data Sources\n\nNHGIS – Historical census data\n\nNeighborhood Change Database (NCDB)\n\nLongitudinal Tract Database (LTDB) – Tracks changes over time"
