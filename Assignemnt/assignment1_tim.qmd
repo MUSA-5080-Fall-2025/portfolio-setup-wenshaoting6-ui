@@ -1,0 +1,420 @@
+---
+title: "Assignment 1: Census Data Quality for Policy Decisions"
+subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
+author: "Tim Wen"
+date: today
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-location: left
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Assignment Overview
+
+## Scenario
+
+You are a data analyst for the **[Virginia] Department of Human Services**. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.
+
+Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.
+
+## Learning Objectives
+
+- Apply dplyr functions to real census data for policy analysis
+- Evaluate data quality using margins of error 
+- Connect technical analysis to algorithmic decision-making
+- Identify potential equity implications of data reliability issues
+- Create professional documentation for policy stakeholders
+
+## Submission Instructions
+
+**Submit by posting your updated portfolio link on Canvas.** Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/`
+
+Make sure to update your `_quarto.yml` navigation to include this assignment under an "Assignments" menu.
+
+# Part 1: Portfolio Integration
+
+Create this assignment in your portfolio repository under an `assignments/assignment_1/` folder structure. Update your navigation menu to include:
+
+```
+- text: Assignments
+  menu:
+    - href: assignments/assignment_1/your_file_name.qmd
+      text: "Assignment 1: Census Data Exploration"
+```
+If there is a special character like comma, you need use double quote mark so that the quarto can identify this as text
+
+# Setup
+
+```{r setup}
+# Load required packages (hint: you need tidycensus, tidyverse, and knitr)
+library(tidycensus)
+library(tidyverse)
+library(knitr)
+
+# Set your Census API key
+census_api_key("4a3cbd333d5407aa78ae4e581e634546cb6e540a")
+# Choose your state for analysis - assign it to a variable called my_state
+state="VA"
+```
+
+**State Selection:** I have chosen **[Virginia]** for this analysis because: [Northern Virginia is dense-populated and rich while southern Virginia is much less dense and income is lower. The diversity makes this state interesting to study]
+
+# Part 2: County-Level Resource Assessment
+
+## 2.1 Data Retrieval
+
+**Your Task:** Use `get_acs()` to retrieve county-level data for your chosen state.
+
+**Requirements:**
+- Geography: county level
+- Variables: median household income (B19013_001) and total population (B01003_001)  
+- Year: 2022
+- Survey: acs5
+- Output format: wide
+
+**Hint:** Remember to give your variables descriptive names using the `variables = c(name = "code")` syntax.
+
+```{r county-data}
+# Write your get_acs() code here
+data=c(MHI="B19013_001",Population="B01003_001")
+
+census_ric=get_acs(
+  geography = "county",
+  state= state,
+  variables = data,
+  year = 2023,
+  survey = "acs5",
+  output="wide", 
+)
+
+# Clean the county names to remove state name and "County" 
+# Hint: use mutate() with str_remove()
+census_ric=census_ric %>%
+  mutate(NAME=str_remove(NAME,"city, Virginia"))
+
+census_ric=census_ric %>%
+  mutate(NAME=str_remove(NAME,"County, Virginia"))
+
+# Display the first few rows
+head(census_ric)
+```
+
+## 2.2 Data Quality Assessment
+
+**Your Task:** Calculate margin of error percentages and create reliability categories.
+
+**Requirements:**
+- Calculate MOE percentage: (margin of error / estimate) * 100
+- Create reliability categories:
+  - High Confidence: MOE < 5%
+  - Moderate Confidence: MOE 5-10%  
+  - Low Confidence: MOE > 10%
+- Create a flag for unreliable estimates (MOE > 10%)
+
+**Hint:** Use `mutate()` with `case_when()` for the categories.
+
+```{r income-reliability}
+# Calculate MOE percentage and reliability categories using mutate()
+census_ric=census_ric%>%
+  mutate(MHIM_per=MHIM/MHIE*100,
+         PopM_per=PopulationM/PopulationE*100,
+         Reliability_MHI=case_when(
+           MHIM_per<5~"High Confidence",
+           MHIM_per>5&MHIM_per<10~"Moderate Confidence",
+           TRUE~"Low Confidence"
+         ))
+
+
+# Create a summary showing count of counties in each reliability category
+# Hint: use count() and mutate() to add percentages
+count=census_ric%>%
+  group_by(Reliability_MHI)%>%
+  summarise(count=n())
+
+print(count)
+```
+
+## 2.3 High Uncertainty Counties
+
+**Your Task:** Identify the 5 counties with the highest MOE percentages.
+
+**Requirements:**
+- Sort by MOE percentage (highest first)
+- Select the top 5 counties
+- Display: county name, median income, margin of error, MOE percentage, reliability category
+- Format as a professional table using `kable()`
+
+**Hint:** Use `arrange()`, `slice()`, and `select()` functions.
+
+```{r high-uncertainty}
+# Create table of top 5 counties by MOE percentage
+arranged_census=arrange(census_ric,desc(MHIM_per))
+sliced_census=slice(arranged_census,1:5)
+final_census=sliced_census%>%
+  select(NAME,MHIE,MHIM,MHIM_per,Reliability_MHI)
+# Format as table with kable() - include appropriate column names and caption
+kable(final_census,col.names = c("County","MHI","MOE","MOE%","Reliability"))
+```
+
+**Data Quality Commentary:**
+
+[In algorithmic decision-making, MOE could either underestimate or overestimate a certain demographic variable, which could misleading interpretation. For example, an overestimate of MHI in a county could miss the potential aid from the central government. In the table above, all counties would be influenced by MOE. For Bath and Lexington, with MOE the income would cross between the us MHI:$83,730; for Norton and Galax, with MOE the income would cross between the us poverty income level:$30900;Covington's MHI is also close to poverty line. I think one of the most common characteristics among these counties is the low population, which makes scence as lower population would lead to lower samples, increasing the potential MOE]
+
+# Part 3: Neighborhood-Level Analysis
+
+## 3.1 Focus Area Selection
+
+**Your Task:** Select 2-3 counties from your reliability analysis for detailed tract-level study.
+
+**Strategy:** Choose counties that represent different reliability levels (e.g., 1 high confidence, 1 moderate, 1 low confidence) to compare how data quality varies.
+
+```{r select-counties}
+# Use filter() to select 2-3 counties from your county_reliability data
+# Store the selected counties in a variable called selected_counties
+select_counties_2 <- census_ric%>%
+  filter(GEOID=="51660"|GEOID=="51171"|GEOID=="51830")%>%
+  select("NAME","MHIE","MHIM_per","Reliability_MHI")
+select_counties_2
+# Display the selected counties with their key characteristics
+
+# Show: county name, median income, MOE percentage, reliability category
+```
+
+**Comment on the output:** [I choose Shenandoah, Harrisonburg and Willamsburg as my county to study, interestingly, the reliability decreases as Counties' MHI increase, which is different from our common sense
+that richer places should have lower MOE.]
+
+## 3.2 Tract-Level Demographics
+
+**Your Task:** Get demographic data for census tracts in your selected counties.
+
+**Requirements:**
+- Geography: tract level
+- Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001)
+- Use the same state and year as before
+- Output format: wide
+- **Challenge:** You'll need county codes, not names. Look at the GEOID patterns in your county data for hints.
+
+```{r tract-demographics}
+# Define your race/ethnicity variables with descriptive names
+race=c(White="B03002_003",Black="B03002_004",Hispanic="B03002_012",Population="B03002_001")
+county=c("660","171","830")
+# Use get_acs() to retrieve tract-level data
+tract_va=get_acs(
+  geography = "tract",
+  state = state,
+  county = county,
+  variables = race,
+  year = 2023,
+  survey = "acs5",
+  output="wide", 
+)
+# Hint: You may need to specify county codes in the county parameter
+
+# Calculate percentage of each group using mutate()
+tract_va=tract_va%>%
+  mutate(White_per=WhiteE/PopulationE,
+         Black_per=BlackE/PopulationE,
+         Hispanic_per=HispanicE/PopulationE,
+         
+         )
+# Create percentages for white, Black, and Hispanic populations
+
+# Add readable tract and county name columns using str_extract() or similar
+tract_va=tract_va%>%
+  mutate(NAME=str_remove(NAME,"; Virginia"))
+
+tract_va[,14:15] <- str_split_fixed(tract_va$NAME,";",2)
+
+```
+
+## 3.3 Demographic Analysis
+
+**Your Task:** Analyze the demographic patterns in your selected areas.
+
+```{r demographic-analysis}
+# Find the tract with the highest percentage of Hispanic/Latino residents
+# Hint: use arrange() and slice() to get the top tract
+tract_va_top=tract_va%>%arrange(desc(
+  tract_va$Hispanic_per)
+)
+
+tract_va_top1=tract_va_top%>%slice(1)
+
+# Calculate average demographics by county using group_by() and summarize()
+# Show: number of tracts, average percentage for each racial/ethnic group
+avg_demo=tract_va%>%group_by(V2)%>%
+  summarize(avg_whper=mean(White_per),avg_blper=mean(Black_per),avg_his_per=mean(Hispanic_per),count=n())
+# Create a nicely formatted table of your results using kable()
+
+kable(avg_demo,col.names = c("County","Average White Percentage","Average Black Percentage","Average Hisanic Population","Count"))
+```
+
+# Part 4: Comprehensive Data Quality Evaluation
+
+## 4.1 MOE Analysis for Demographic Variables
+
+**Your Task:** Examine margins of error for demographic variables to see if some communities have less reliable data.
+
+**Requirements:**
+- Calculate MOE percentages for each demographic variable
+- Flag tracts where any demographic variable has MOE > 15%
+- Create summary statistics
+
+```{r demographic-moe}
+# Calculate MOE percentages for white, Black, and Hispanic variables
+# Hint: use the same formula as before (margin/estimate * 100)
+tract_va=tract_va%>%
+  mutate(WhiteM_moe=WhiteM/WhiteE*100,
+         BlackM_moe=BlackM/BlackE*100,
+         HispanicM_moe=HispanicM/HispanicE*100,
+         PopulationM_moe=PopulationM/PopulationE*100
+         )
+
+# Create a flag for tracts with high MOE on any demographic variable
+# Use logical operators (| for OR) in an ifelse() statement
+tract_va=tract_va%>%
+  mutate(flag=ifelse(WhiteM_moe|BlackM_moe|HispanicM_moe|PopulationM_moe>15,"Flag","Not flag"))
+# Create summary statistics showing how many tracts have data quality issues
+summary=tract_va%>%group_by(flag)%>%
+  summarize(count=n())
+print(summary)
+```
+
+## 4.2 Pattern Analysis
+
+**Your Task:** Investigate whether data quality problems are randomly distributed or concentrated in certain types of communities.
+
+```{r pattern-analysis}
+# Group tracts by whether they have high MOE issues
+# Calculate average characteristics for each group:
+# - population size, demographic percentages
+
+#as all of my tracts have high MOE issues, I will just calculate its average characteristics
+
+tract_va_summary <- tract_va %>%
+  summarise(
+    avg_pop = mean(PopulationE),
+    white_avg = mean(White_per),
+    black_avg = mean(Black_per),
+    hispanic_avg = mean(Hispanic_per)
+  )
+
+
+# Use group_by() and summarize() to create this comparison
+# Create a professional table showing the patterns
+
+
+
+kable(tract_va_summary,col.names = c("Average Population","Average White Percentage","Average Black Percentage","Average Hisanic Percentage"))
+
+```
+
+**Pattern Analysis:** [For my area of study, it seems that all the tracts in three counties have data quality issues, which is interesting since two of them have moderate/high reliability as a county. Based on the summary output, it is highly possible that the MOE for black or Hispanic population may be high because the percentage of these population is so low. In other words, the sample when sending out the survey is small for them, and thus it is possible that the MOE is high for these two variables.]
+
+
+# Part 5: Policy Recommendations
+
+## 5.1 Analysis Integration and Professional Summary
+
+**Your Task:** Write an executive summary that integrates findings from all four analyses.
+
+**Executive Summary Requirements:**
+1. **Overall Pattern Identification**: What are the systematic patterns across all your analyses?
+2. **Equity Assessment**: Which communities face the greatest risk of algorithmic bias based on your findings?
+3. **Root Cause Analysis**: What underlying factors drive both data quality issues and bias risk?
+4. **Strategic Recommendations**: What should the Department implement to address these systematic issues?
+
+**Executive Summary:**
+
+[Based on my findings, it seems that counties/tract with less population (sampling size) tend to have higher MOE. It seems that there is no systematic pattern between MHI and MOE. Moreover, there is no correlation between the reliability and spatial scale. For example, two of the counties I selected is moderate/high reliability, while on the tract level all of the tract suffer from MOE problems
+
+In the counties I selected, black and hispanic population tend to have risk of algorithmic bias, as the population for them is low, especially for some specific census tracts. The low population (sampling size) would lead to a higher MOE that underestimate/overestimate some analysis results.
+
+In my opinion, the biggest factor that drive data quality issues is sampling size. When sampling size is small, it is easier to have a bigger MOE and cause biased estimation in the end
+
+The most direct way is definitely increase the sample size: not only sending more surveys but also try to increase citizens' engagement on replying to census data]
+
+## 6.3 Specific Recommendations
+
+**Your Task:** Create a decision framework for algorithm implementation.
+
+```{r recommendations-data}
+# Create a summary table using your county reliability data
+# Include: county name, median income, MOE percentage, reliability category
+county_sum=census_ric%>%select(
+  NAME,MHIE,MHIM_per,Reliability_MHI
+)
+
+# Add a new column with algorithm recommendations using case_when():
+# - High Confidence: "Safe for algorithmic decisions"
+# - Moderate Confidence: "Use with caution - monitor outcomes"  
+# - Low Confidence: "Requires manual review or additional data"
+
+county_sum=county_sum%>%
+  mutate(Suggestion=case_when(
+    Reliability_MHI == "High Confidence" ~ "Safe for algorithmic decisions",
+    Reliability_MHI == "Moderate Confidence" ~ "Use with caution - monitor outcomes",
+    TRUE ~ "Requires manual review or additional data"
+  ))
+
+
+
+# Format as a professional table with kable()
+kable(county_sum,col.names = c("NAME","MHI","MHI MOE Percentage","Reliability","Suggestion"))
+```
+
+**Key Recommendations:**
+
+**Your Task:** Use your analysis results to provide specific guidance to the department.
+
+1. **Counties suitable for immediate algorithmic implementation:** [Albemarle, Arlington, Bedford, Chesterfield, Fairfax, Fauquier, Frederick, Hanover, Henrico, Isle of Wight, James City, Loudoun, Montgomery, Prince William, Pulaski, Roanoke, Rockingham, Spotsylvania, Stafford, Wise, York, Alexandria, Chesapeake, Hampton, Harrisonburg, Manassas, Newport News, Norfolk, Portsmouth, Richmond, Roanoke, Suffolk, Virginia Beach.  
+]
+
+2. **Counties requiring additional oversight:** [Alleghany, Amherst, Augusta, Bland, Botetourt, Brunswick, Buchanan, Buckingham, Campbell, Carroll, Charles City, Clarke, Culpeper, Cumberland, Dickenson, Dinwiddie, Fluvanna, Franklin, Giles, Gloucester, Goochland, Grayson, Greene, Halifax, Henry, King George, King William, Lancaster, Lee, Madison, Mecklenburg, New Kent, Orange ,Page, Patrick, Pittsylvania, Powhatan, Prince Edward, Prince George, Rockbridge, Scott, Shenandoah, Smyth, Southampton, Tazewell, Warren, Washington, Wythe, Bristol, Colonial Heights, Danville, Fredericksburg, Lynchburg, Martinsville, Petersburg, Poquoson, Salem, Staunton, Waynesboro, Winchester. I would recommend check with the MOE before using, the MOE may not be very large. But needs to be careful to avoid potential bias 
+]
+
+3. **Counties needing alternative approaches:** [Accomack, Amelia, Appomattox, Bath, Caroline, Charlotte, Craig, Essex, Floyd, Greensville, Highland, King and Queen, Louisa, Lunenburg, Mathews, Middlesex, Nelso, Northampton, Northumberland, Nottoway, Rappahannock, Richmond, Russell, Surry, Sussex, Westmoreland, Buena Vista, Charlottesville, Covington, Emporia, Fairfax, Falls Church, Franklin, Galax, Hopewell, Lexington, Manassas Park, Norton, Radford, Williamsburg. I would recommend check with the MOE before using the data for these counties. If possible, find a alternative data source and combine that with census data (eg. zillow housing price and census median home value) 
+]
+
+## Questions for Further Investigation
+
+[1. How does MOE change over time, does MOE issue improve from 2005 to 2023?
+ 2. Does MOE have spatial pattern within the city? eg. comparsion between downtown MOE and suburban MOE]
+
+# Technical Notes
+
+**Data Sources:** 
+- U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates
+- Retrieved via tidycensus R package on [2025/9/28]
+
+**Reproducibility:** 
+- All analysis conducted in R version [4.5.1]
+- Census API key required for replication
+- Complete code and documentation available at: [https://musa-5080-fall-2025.github.io/portfolio-setup-wenshaoting6-ui/]
+
+**Methodology Notes:**
+[There is no issues for reproducibility]
+
+**Limitations:**
+[The project only uses Virginia as study area, further research is needed for a more diverse study area]
+
+---
+
+## Submission Checklist
+
+Before submitting your portfolio link on Canvas:
+
+- [ ] All code chunks run without errors
+- [ ] All "[Fill this in]" prompts have been completed
+- [ ] Tables are properly formatted and readable
+- [ ] Executive summary addresses all four required components
+- [ ] Portfolio navigation includes this assignment
+- [ ] Census API key is properly set 
+- [ ] Document renders correctly to HTML
+
+**Remember:** Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/your_file_name.html`

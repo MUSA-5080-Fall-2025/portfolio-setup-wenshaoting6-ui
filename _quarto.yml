@@ -22,7 +22,7 @@ website:
             text: Lab 0
       - text: Assignments
         menu:
-          - href: Assignments/Assignment1/assignment1_tim.qmd 
+          - href: Assignemnt/assignment1_tim.qmd 
             text: Assignment 1
 
             
