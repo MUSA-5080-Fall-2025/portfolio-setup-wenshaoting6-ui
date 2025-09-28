@@ -57,12 +57,12 @@ library(tidyverse)
 library(knitr)
 
 # Set your Census API key
-census_api_key("8ef93a7afa0a83cf6c491115736099641eee672a")
+census_api_key("4a3cbd333d5407aa78ae4e581e634546cb6e540a")
 # Choose your state for analysis - assign it to a variable called my_state
 state="VA"
 ```
 
-**State Selection:** I have chosen **[Virginia]** for this analysis because: [Brief explanation of why you chose this state]
+**State Selection:** I have chosen **[Virginia]** for this analysis because: [Northern Virginia is dense-populated and rich while southern Virginia is much less dense and income is lower. The diversity makes this state interesting to study]
 
 # Part 2: County-Level Resource Assessment
 
@@ -129,11 +129,14 @@ census_ric=census_ric%>%
            TRUE~"Low Confidence"
          ))
 
+
+# Create a summary showing count of counties in each reliability category
+# Hint: use count() and mutate() to add percentages
 count=census_ric%>%
   group_by(Reliability_MHI)%>%
   summarise(count=n())
-# Create a summary showing count of counties in each reliability category
-# Hint: use count() and mutate() to add percentages
+
+print(count)
 ```
 
 ## 2.3 High Uncertainty Counties
@@ -182,7 +185,8 @@ select_counties_2
 # Show: county name, median income, MOE percentage, reliability category
 ```
 
-**Comment on the output:** [write something :)]
+**Comment on the output:** [I choose Shenandoah, Harrisonburg and Willamsburg as my county to study, interestingly, the reliability decreases as Counties' MHI increase, which is different from our common sense
+that richer places should have lower MOE.]
 
 ## 3.2 Tract-Level Demographics
 
@@ -235,12 +239,19 @@ tract_va[,14:15] <- str_split_fixed(tract_va$NAME,";",2)
 ```{r demographic-analysis}
 # Find the tract with the highest percentage of Hispanic/Latino residents
 # Hint: use arrange() and slice() to get the top tract
-tract_va
+tract_va_top=tract_va%>%arrange(desc(
+  tract_va$Hispanic_per)
+)
+
+tract_va_top1=tract_va_top%>%slice(1)
 
 # Calculate average demographics by county using group_by() and summarize()
 # Show: number of tracts, average percentage for each racial/ethnic group
-
+avg_demo=tract_va%>%group_by(V2)%>%
+  summarize(avg_whper=mean(White_per),avg_blper=mean(Black_per),avg_his_per=mean(Hispanic_per),count=n())
 # Create a nicely formatted table of your results using kable()
+
+kable(avg_demo,col.names = c("County","Average White Percentage","Average Black Percentage","Average Hisanic Population","Count"))
 ```
 
 # Part 4: Comprehensive Data Quality Evaluation
@@ -258,16 +269,20 @@ tract_va
 # Calculate MOE percentages for white, Black, and Hispanic variables
 # Hint: use the same formula as before (margin/estimate * 100)
 tract_va=tract_va%>%
-  mutate(WhiteM_per=WhiteM/WhiteE,
-         BlackM_per=BlackM/BlackE,
-         HispanicM_per=HispanicM/HispanicE,
-         PopulationM_per=PopulationM/PopulationE
+  mutate(WhiteM_moe=WhiteM/WhiteE*100,
+         BlackM_moe=BlackM/BlackE*100,
+         HispanicM_moe=HispanicM/HispanicE*100,
+         PopulationM_moe=PopulationM/PopulationE*100
          )
 
 # Create a flag for tracts with high MOE on any demographic variable
 # Use logical operators (| for OR) in an ifelse() statement
-
+tract_va=tract_va%>%
+  mutate(flag=ifelse(WhiteM_moe|BlackM_moe|HispanicM_moe|PopulationM_moe>15,"Flag","Not flag"))
 # Create summary statistics showing how many tracts have data quality issues
+summary=tract_va%>%group_by(flag)%>%
+  summarize(count=n())
+print(summary)
 ```
 
 ## 4.2 Pattern Analysis
@@ -279,11 +294,27 @@ tract_va=tract_va%>%
 # Calculate average characteristics for each group:
 # - population size, demographic percentages
 
+#as all of my tracts have high MOE issues, I will just calculate its average characteristics
+
+tract_va_summary <- tract_va %>%
+  summarise(
+    avg_pop = mean(PopulationE),
+    white_avg = mean(White_per),
+    black_avg = mean(Black_per),
+    hispanic_avg = mean(Hispanic_per)
+  )
+
+
 # Use group_by() and summarize() to create this comparison
 # Create a professional table showing the patterns
+
+
+
+kable(tract_va_summary,col.names = c("Average Population","Average White Percentage","Average Black Percentage","Average Hisanic Percentage"))
+
 ```
 
-**Pattern Analysis:** [Describe any patterns you observe. Do certain types of communities have less reliable data? What might explain this?]
+**Pattern Analysis:** [For my area of study, it seems that all the tracts in three counties have data quality issues, which is interesting since two of them have moderate/high reliability as a county. Based on the summary output, it is highly possible that the MOE for black or Hispanic population may be high because the percentage of these population is so low. In other words, the sample when sending out the survey is small for them, and thus it is possible that the MOE is high for these two variables.]
 
 
 # Part 5: Policy Recommendations
@@ -300,7 +331,13 @@ tract_va=tract_va%>%
 
 **Executive Summary:**
 
-[Your integrated 4-paragraph summary here]
+[Based on my findings, it seems that counties/tract with less population (sampling size) tend to have higher MOE. It seems that there is no systematic pattern between MHI and MOE. Moreover, there is no correlation between the reliability and spatial scale. For example, two of the counties I selected is moderate/high reliability, while on the tract level all of the tract suffer from MOE problems
+
+In the counties I selected, black and hispanic population tend to have risk of algorithmic bias, as the population for them is low, especially for some specific census tracts. The low population (sampling size) would lead to a higher MOE that underestimate/overestimate some analysis results.
+
+In my opinion, the biggest factor that drive data quality issues is sampling size. When sampling size is small, it is easier to have a bigger MOE and cause biased estimation in the end
+
+The most direct way is definitely increase the sample size: not only sending more surveys but also try to increase citizens' engagement on replying to census data]
 
 ## 6.3 Specific Recommendations
 
@@ -309,45 +346,62 @@ tract_va=tract_va%>%
 ```{r recommendations-data}
 # Create a summary table using your county reliability data
 # Include: county name, median income, MOE percentage, reliability category
+county_sum=census_ric%>%select(
+  NAME,MHIE,MHIM_per,Reliability_MHI
+)
 
 # Add a new column with algorithm recommendations using case_when():
 # - High Confidence: "Safe for algorithmic decisions"
 # - Moderate Confidence: "Use with caution - monitor outcomes"  
 # - Low Confidence: "Requires manual review or additional data"
 
+county_sum=county_sum%>%
+  mutate(Suggestion=case_when(
+    Reliability_MHI == "High Confidence" ~ "Safe for algorithmic decisions",
+    Reliability_MHI == "Moderate Confidence" ~ "Use with caution - monitor outcomes",
+    TRUE ~ "Requires manual review or additional data"
+  ))
+
+
+
 # Format as a professional table with kable()
+kable(county_sum,col.names = c("NAME","MHI","MHI MOE Percentage","Reliability","Suggestion"))
 ```
 
 **Key Recommendations:**
 
 **Your Task:** Use your analysis results to provide specific guidance to the department.
 
-1. **Counties suitable for immediate algorithmic implementation:** [List counties with high confidence data and explain why they're appropriate]
+1. **Counties suitable for immediate algorithmic implementation:** [Albemarle, Arlington, Bedford, Chesterfield, Fairfax, Fauquier, Frederick, Hanover, Henrico, Isle of Wight, James City, Loudoun, Montgomery, Prince William, Pulaski, Roanoke, Rockingham, Spotsylvania, Stafford, Wise, York, Alexandria, Chesapeake, Hampton, Harrisonburg, Manassas, Newport News, Norfolk, Portsmouth, Richmond, Roanoke, Suffolk, Virginia Beach.  
+]
 
-2. **Counties requiring additional oversight:** [List counties with moderate confidence data and describe what kind of monitoring would be needed]
+2. **Counties requiring additional oversight:** [Alleghany, Amherst, Augusta, Bland, Botetourt, Brunswick, Buchanan, Buckingham, Campbell, Carroll, Charles City, Clarke, Culpeper, Cumberland, Dickenson, Dinwiddie, Fluvanna, Franklin, Giles, Gloucester, Goochland, Grayson, Greene, Halifax, Henry, King George, King William, Lancaster, Lee, Madison, Mecklenburg, New Kent, Orange ,Page, Patrick, Pittsylvania, Powhatan, Prince Edward, Prince George, Rockbridge, Scott, Shenandoah, Smyth, Southampton, Tazewell, Warren, Washington, Wythe, Bristol, Colonial Heights, Danville, Fredericksburg, Lynchburg, Martinsville, Petersburg, Poquoson, Salem, Staunton, Waynesboro, Winchester. I would recommend check with the MOE before using, the MOE may not be very large. But needs to be careful to avoid potential bias 
+]
 
-3. **Counties needing alternative approaches:** [List counties with low confidence data and suggest specific alternatives - manual review, additional surveys, etc.]
+3. **Counties needing alternative approaches:** [Accomack, Amelia, Appomattox, Bath, Caroline, Charlotte, Craig, Essex, Floyd, Greensville, Highland, King and Queen, Louisa, Lunenburg, Mathews, Middlesex, Nelso, Northampton, Northumberland, Nottoway, Rappahannock, Richmond, Russell, Surry, Sussex, Westmoreland, Buena Vista, Charlottesville, Covington, Emporia, Fairfax, Falls Church, Franklin, Galax, Hopewell, Lexington, Manassas Park, Norton, Radford, Williamsburg. I would recommend check with the MOE before using the data for these counties. If possible, find a alternative data source and combine that with census data (eg. zillow housing price and census median home value) 
+]
 
 ## Questions for Further Investigation
 
-[List 2-3 questions that your analysis raised that you'd like to explore further in future assignments. Consider questions about spatial patterns, time trends, or other demographic factors.]
+[1. How does MOE change over time, does MOE issue improve from 2005 to 2023?
+ 2. Does MOE have spatial pattern within the city? eg. comparsion between downtown MOE and suburban MOE]
 
 # Technical Notes
 
 **Data Sources:** 
 - U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates
-- Retrieved via tidycensus R package on [date]
+- Retrieved via tidycensus R package on [2025/9/28]
 
 **Reproducibility:** 
-- All analysis conducted in R version [your version]
+- All analysis conducted in R version [4.5.1]
 - Census API key required for replication
-- Complete code and documentation available at: [your portfolio URL]
+- Complete code and documentation available at: [https://musa-5080-fall-2025.github.io/portfolio-setup-wenshaoting6-ui/]
 
 **Methodology Notes:**
-[Describe any decisions you made about data processing, county selection, or analytical choices that might affect reproducibility]
+[There is no issues for reproducibility]
 
 **Limitations:**
-[Note any limitations in your analysis - sample size issues, geographic scope, temporal factors, etc.]
+[The project only uses Virginia as study area, further research is needed for a more diverse study area]
 
 ---
 
