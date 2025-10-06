@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-08">
 
-<title>Tim Wen Week 1 Notes - Course Introduction – Tim Wen - MUSA 5080 Portfolio</title>
+<title>Tim Wen - Week 4 Notes: sf/projection – Tim Wen - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -157,11 +157,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
-  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
-  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
-  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#geographic-bias-in-algorithms" id="toc-geographic-bias-in-algorithms" class="nav-link active" data-scroll-target="#geographic-bias-in-algorithms">Geographic Bias in Algorithms</a></li>
+  <li><a href="#spatial-data-fundamentals" id="toc-spatial-data-fundamentals" class="nav-link" data-scroll-target="#spatial-data-fundamentals">Spatial Data Fundamentals</a>
+  <ul class="collapse">
+  <li><a href="#vector-data-model" id="toc-vector-data-model" class="nav-link" data-scroll-target="#vector-data-model">Vector Data Model</a></li>
+  </ul></li>
+  <li><a href="#why-use-sf" id="toc-why-use-sf" class="nav-link" data-scroll-target="#why-use-sf">Why Use <code>sf</code>?</a></li>
   </ul>
 </nav>
     </div>
@@ -170,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tim Wen Week 1 Notes - Course Introduction</h1>
+<h1 class="title">Tim Wen - Week 4 Notes: sf/projection</h1>
 </div>
 
 
@@ -193,41 +194,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="key-concepts-learned" class="level2">
-<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
+<section id="geographic-bias-in-algorithms" class="level2">
+<h2 class="anchored" data-anchor-id="geographic-bias-in-algorithms">Geographic Bias in Algorithms</h2>
 <ul>
-<li>Basic key features of dplyr</li>
-<li>how to use github and push everything I edited</li>
+<li>Training data may <strong>underrepresent certain areas</strong></li>
+<li><strong>Spatial autocorrelation</strong> violates the independence assumption</li>
+<li><strong>Service delivery algorithms</strong> may reinforce existing geographic inequities</li>
 </ul>
+<hr>
 </section>
-<section id="coding-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+<section id="spatial-data-fundamentals" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-data-fundamentals">Spatial Data Fundamentals</h2>
+<section id="vector-data-model" class="level3">
+<h3 class="anchored" data-anchor-id="vector-data-model">Vector Data Model</h3>
 <ul>
-<li>select–select column</li>
-<li>filter–select the row</li>
-<li>mutate–create new column</li>
-<li>summarize–calculate statistics</li>
-<li>grouped_by–operate a group</li>
-<li>rename–rename a column</li>
-<li>%&gt;% pipe connects different command together</li>
+<li><strong>Points:</strong> Locations (e.g., schools, hospitals, crime incidents)<br>
+</li>
+<li><strong>Lines:</strong> Linear features (e.g., roads, rivers, transit routes)<br>
+</li>
+<li><strong>Polygons:</strong> Areas (e.g., census tracts, neighborhoods, service areas)</li>
 </ul>
+<p>Each spatial feature includes: - <strong>Geometry</strong> (shape and location)<br>
+- <strong>Attributes</strong> (descriptive data)</p>
+<hr>
 </section>
-<section id="questions-challenges" class="level2">
-<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
-<ul>
-<li>I understand all the contents today!</li>
-</ul>
 </section>
-<section id="connections-to-policy" class="level2">
-<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+<section id="why-use-sf" class="level2">
+<h2 class="anchored" data-anchor-id="why-use-sf">Why Use <code>sf</code>?</h2>
 <ul>
-<li>A lot of census data cleaning requires such coding techniques</li>
-</ul>
-</section>
-<section id="reflection" class="level2">
-<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
-<ul>
-<li>I will apply them into data cleaning and some basic analysis on data such as calculating.</li>
+<li>Moder</li>
 </ul>
 
 

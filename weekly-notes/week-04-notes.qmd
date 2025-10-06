@@ -1,0 +1,31 @@
+---
+title: "Tim Wen - Week 4 Notes: sf/projection"
+date: "2025-09-08"
+---
+
+## Geographic Bias in Algorithms
+
+- Training data may **underrepresent certain areas**
+- **Spatial autocorrelation** violates the independence assumption
+- **Service delivery algorithms** may reinforce existing geographic inequities
+
+---
+
+## Spatial Data Fundamentals
+
+### Vector Data Model
+
+- **Points:** Locations (e.g., schools, hospitals, crime incidents)  
+- **Lines:** Linear features (e.g., roads, rivers, transit routes)  
+- **Polygons:** Areas (e.g., census tracts, neighborhoods, service areas)
+
+Each spatial feature includes:
+- **Geometry** (shape and location)  
+- **Attributes** (descriptive data)
+
+---
+
+## Why Use `sf`?
+
+- Moder
+
