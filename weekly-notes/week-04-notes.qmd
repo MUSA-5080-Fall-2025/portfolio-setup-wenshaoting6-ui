@@ -1,5 +1,5 @@
 ---
-title: "Tim Wen - Week 4 Notes: sf/projection"
+title: "Tim Wen - Week 4 Notes: sf / Projection"
 date: "2025-09-08"
 ---
 
@@ -7,7 +7,14 @@ date: "2025-09-08"
 
 - Training data may **underrepresent certain areas**
 - **Spatial autocorrelation** violates the independence assumption
-- **Service delivery algorithms** may reinforce existing geographic inequities
+- **Service delivery algorithms** may reinforce existing geographic inequities  
+
+**Examples:**
+- Rideshare algorithms avoiding certain neighborhoods  
+- Crime prediction concentrating enforcement in specific areas  
+- Social service algorithms missing rural communities  
+
+**Your role:** Understand spatial patterns to design **fairer systems**
 
 ---
 
@@ -27,5 +34,88 @@ Each spatial feature includes:
 
 ## Why Use `sf`?
 
-- Moder
+- Modern replacement for older spatial packages  
+- Integrates smoothly with **tidyverse** workflows  
+- Follows **international standards**  
+- **Fast** and **reliable**  
+- Key principle: *Spatial data = `data.frame` + geometry column*
+
+### Common Spatial Data Formats
+
+- **Shapefiles** (`.shp` + supporting files)  
+- **GeoJSON** (`.geojson`)  
+- **KML/KMZ** (Google Earth)  
+- **Database connections** (PostGIS)
+
+---
+
+## Why Projections Matter
+
+The Earth is round, maps are flat — projections are how we translate between the two.
+
+### The Problem
+
+- You can't preserve **area, distance, and angles** simultaneously
+- Different projections optimize different properties
+- **Using the wrong projection → wrong analysis results!**
+
+**Example:** Measuring area in latitude/longitude (degrees) produces incorrect results because degrees vary in physical length across latitudes.
+
+### Projection Properties
+
+- **Conformal** — Preserves local angles/shape (not area)  
+  *Good for navigation and maintaining local shapes*
+
+- **Equal-area (Equivalent)** — Preserves area  
+  *Use for measuring and comparing spatial extents*
+
+- **Equidistant** — Preserves distance from one or more points or along certain lines
+
+- **Azimuthal** — Preserves direction (azimuth) from the center point  
+  *Good for radial analyses*
+
+- **Compromise** — Balances distortions (neither conformal nor equal-area)  
+  *Useful for world maps*
+
+### Common Projection Families & When to Use Them
+
+#### Mercator / Web Mercator (Conformal)
+- **Use for:** Web tiles and interactive maps (EPSG:3857)
+- **Caveat:** Strongly distorts area near poles — avoid for area/distance measurement
+
+#### Transverse Mercator (Conformal)
+- **Use for:** Narrow north–south regions; basis for UTM and many State Plane zones
+- **Good for:** Accurate local distances and angles within a zone
+
+#### Lambert Conformal Conic (Conformal)
+- **Use for:** Mid-latitude, east–west extents (states, provinces)
+- **Good for:** Mapping regions with wide east–west extent
+
+#### Albers Equal-Area Conic (Equal-area)
+- **Use for:** Regional/national area comparisons (e.g., CONUS workflows)
+- **Example:** NAD83 / CONUS Albers (often EPSG:5070) — preferred when you need accurate areas for the contiguous U.S.
+
+#### Azimuthal / Stereographic / Polar Stereographic
+- **Use for:** Polar regions or analyses centered on a point (e.g., radio propagation, viewsheds)
+
+#### UTM (Universal Transverse Mercator)
+- **Use for:** Local to regional measurements
+- Divides the globe into zones for high accuracy within each zone
+- **EPSG codes:** Follow patterns like 326## (WGS84 northern hemisphere + zone number)
+
+#### Compromise Projections (Robinson, Winkel Tripel)
+- **Use for:** Pleasing world maps where no single property is critical
+
+---
+
+## Spatial Subsetting
+
+Extract features based on **spatial relationships** between layers.  
+
+**Example functions:**
+```r
+st_filter()
+st_intersects()
+st_touches()
+st_within()
 

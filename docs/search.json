@@ -2,30 +2,44 @@
   {
     "objectID": "weekly-notes/week-04-notes.html",
     "href": "weekly-notes/week-04-notes.html",
-    "title": "Tim Wen - Week 4 Notes: sf/projection",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
     "section": "",
-    "text": "Training data may underrepresent certain areas\nSpatial autocorrelation violates the independence assumption\nService delivery algorithms may reinforce existing geographic inequities"
+    "text": "Training data may underrepresent certain areas\nSpatial autocorrelation violates the independence assumption\nService delivery algorithms may reinforce existing geographic inequities\n\nExamples: - Rideshare algorithms avoiding certain neighborhoods\n- Crime prediction concentrating enforcement in specific areas\n- Social service algorithms missing rural communities\nYour role: Understand spatial patterns to design fairer systems"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#geographic-bias-in-algorithms",
     "href": "weekly-notes/week-04-notes.html#geographic-bias-in-algorithms",
-    "title": "Tim Wen - Week 4 Notes: sf/projection",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
     "section": "",
-    "text": "Training data may underrepresent certain areas\nSpatial autocorrelation violates the independence assumption\nService delivery algorithms may reinforce existing geographic inequities"
+    "text": "Training data may underrepresent certain areas\nSpatial autocorrelation violates the independence assumption\nService delivery algorithms may reinforce existing geographic inequities\n\nExamples: - Rideshare algorithms avoiding certain neighborhoods\n- Crime prediction concentrating enforcement in specific areas\n- Social service algorithms missing rural communities\nYour role: Understand spatial patterns to design fairer systems"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#spatial-data-fundamentals",
     "href": "weekly-notes/week-04-notes.html#spatial-data-fundamentals",
-    "title": "Tim Wen - Week 4 Notes: sf/projection",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
     "section": "Spatial Data Fundamentals",
     "text": "Spatial Data Fundamentals\n\nVector Data Model\n\nPoints: Locations (e.g., schools, hospitals, crime incidents)\n\nLines: Linear features (e.g., roads, rivers, transit routes)\n\nPolygons: Areas (e.g., census tracts, neighborhoods, service areas)\n\nEach spatial feature includes: - Geometry (shape and location)\n- Attributes (descriptive data)"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#why-use-sf",
     "href": "weekly-notes/week-04-notes.html#why-use-sf",
-    "title": "Tim Wen - Week 4 Notes: sf/projection",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
     "section": "Why Use sf?",
-    "text": "Why Use sf?\n\nModer"
+    "text": "Why Use sf?\n\nModern replacement for older spatial packages\n\nIntegrates smoothly with tidyverse workflows\n\nFollows international standards\n\nFast and reliable\n\nKey principle: Spatial data = data.frame + geometry column\n\n\nCommon Spatial Data Formats\n\nShapefiles (.shp + supporting files)\n\nGeoJSON (.geojson)\n\nKML/KMZ (Google Earth)\n\nDatabase connections (PostGIS)"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#why-projections-matter",
+    "href": "weekly-notes/week-04-notes.html#why-projections-matter",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
+    "section": "Why Projections Matter",
+    "text": "Why Projections Matter\nThe Earth is round, maps are flat — projections are how we translate between the two.\n\nThe Problem\n\nYou can’t preserve area, distance, and angles simultaneously\nDifferent projections optimize different properties\nUsing the wrong projection → wrong analysis results!\n\nExample: Measuring area in latitude/longitude (degrees) produces incorrect results because degrees vary in physical length across latitudes.\n\n\nProjection Properties\n\nConformal — Preserves local angles/shape (not area)\nGood for navigation and maintaining local shapes\nEqual-area (Equivalent) — Preserves area\nUse for measuring and comparing spatial extents\nEquidistant — Preserves distance from one or more points or along certain lines\nAzimuthal — Preserves direction (azimuth) from the center point\nGood for radial analyses\nCompromise — Balances distortions (neither conformal nor equal-area)\nUseful for world maps\n\n\n\nCommon Projection Families & When to Use Them\n\nMercator / Web Mercator (Conformal)\n\nUse for: Web tiles and interactive maps (EPSG:3857)\nCaveat: Strongly distorts area near poles — avoid for area/distance measurement\n\n\n\nTransverse Mercator (Conformal)\n\nUse for: Narrow north–south regions; basis for UTM and many State Plane zones\nGood for: Accurate local distances and angles within a zone\n\n\n\nLambert Conformal Conic (Conformal)\n\nUse for: Mid-latitude, east–west extents (states, provinces)\nGood for: Mapping regions with wide east–west extent\n\n\n\nAlbers Equal-Area Conic (Equal-area)\n\nUse for: Regional/national area comparisons (e.g., CONUS workflows)\nExample: NAD83 / CONUS Albers (often EPSG:5070) — preferred when you need accurate areas for the contiguous U.S.\n\n\n\nAzimuthal / Stereographic / Polar Stereographic\n\nUse for: Polar regions or analyses centered on a point (e.g., radio propagation, viewsheds)\n\n\n\nUTM (Universal Transverse Mercator)\n\nUse for: Local to regional measurements\nDivides the globe into zones for high accuracy within each zone\nEPSG codes: Follow patterns like 326## (WGS84 northern hemisphere + zone number)\n\n\n\nCompromise Projections (Robinson, Winkel Tripel)\n\nUse for: Pleasing world maps where no single property is critical"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#spatial-subsetting",
+    "href": "weekly-notes/week-04-notes.html#spatial-subsetting",
+    "title": "Tim Wen - Week 4 Notes: sf / Projection",
+    "section": "Spatial Subsetting",
+    "text": "Spatial Subsetting\nExtract features based on spatial relationships between layers.\nExample functions: ```r st_filter() st_intersects() st_touches() st_within()"
   },
   {
     "objectID": "weekly-notes/week-02-notes1.html",

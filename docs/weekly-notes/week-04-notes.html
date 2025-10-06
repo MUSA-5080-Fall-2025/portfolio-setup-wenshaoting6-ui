@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-08">
 
-<title>Tim Wen - Week 4 Notes: sf/projection – Tim Wen - MUSA 5080 Portfolio</title>
+<title>Tim Wen - Week 4 Notes: sf / Projection – Tim Wen - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,7 +162,17 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#vector-data-model" id="toc-vector-data-model" class="nav-link" data-scroll-target="#vector-data-model">Vector Data Model</a></li>
   </ul></li>
-  <li><a href="#why-use-sf" id="toc-why-use-sf" class="nav-link" data-scroll-target="#why-use-sf">Why Use <code>sf</code>?</a></li>
+  <li><a href="#why-use-sf" id="toc-why-use-sf" class="nav-link" data-scroll-target="#why-use-sf">Why Use <code>sf</code>?</a>
+  <ul class="collapse">
+  <li><a href="#common-spatial-data-formats" id="toc-common-spatial-data-formats" class="nav-link" data-scroll-target="#common-spatial-data-formats">Common Spatial Data Formats</a></li>
+  </ul></li>
+  <li><a href="#why-projections-matter" id="toc-why-projections-matter" class="nav-link" data-scroll-target="#why-projections-matter">Why Projections Matter</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#projection-properties" id="toc-projection-properties" class="nav-link" data-scroll-target="#projection-properties">Projection Properties</a></li>
+  <li><a href="#common-projection-families-when-to-use-them" id="toc-common-projection-families-when-to-use-them" class="nav-link" data-scroll-target="#common-projection-families-when-to-use-them">Common Projection Families &amp; When to Use Them</a></li>
+  </ul></li>
+  <li><a href="#spatial-subsetting" id="toc-spatial-subsetting" class="nav-link" data-scroll-target="#spatial-subsetting">Spatial Subsetting</a></li>
   </ul>
 </nav>
     </div>
@@ -171,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tim Wen - Week 4 Notes: sf/projection</h1>
+<h1 class="title">Tim Wen - Week 4 Notes: sf / Projection</h1>
 </div>
 
 
@@ -201,6 +211,10 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Spatial autocorrelation</strong> violates the independence assumption</li>
 <li><strong>Service delivery algorithms</strong> may reinforce existing geographic inequities</li>
 </ul>
+<p><strong>Examples:</strong> - Rideshare algorithms avoiding certain neighborhoods<br>
+- Crime prediction concentrating enforcement in specific areas<br>
+- Social service algorithms missing rural communities</p>
+<p><strong>Your role:</strong> Understand spatial patterns to design <strong>fairer systems</strong></p>
 <hr>
 </section>
 <section id="spatial-data-fundamentals" class="level2">
@@ -222,8 +236,113 @@ ul.task-list li input[type="checkbox"] {
 <section id="why-use-sf" class="level2">
 <h2 class="anchored" data-anchor-id="why-use-sf">Why Use <code>sf</code>?</h2>
 <ul>
-<li>Moder</li>
+<li>Modern replacement for older spatial packages<br>
+</li>
+<li>Integrates smoothly with <strong>tidyverse</strong> workflows<br>
+</li>
+<li>Follows <strong>international standards</strong><br>
+</li>
+<li><strong>Fast</strong> and <strong>reliable</strong><br>
+</li>
+<li>Key principle: <em>Spatial data = <code>data.frame</code> + geometry column</em></li>
 </ul>
+<section id="common-spatial-data-formats" class="level3">
+<h3 class="anchored" data-anchor-id="common-spatial-data-formats">Common Spatial Data Formats</h3>
+<ul>
+<li><strong>Shapefiles</strong> (<code>.shp</code> + supporting files)<br>
+</li>
+<li><strong>GeoJSON</strong> (<code>.geojson</code>)<br>
+</li>
+<li><strong>KML/KMZ</strong> (Google Earth)<br>
+</li>
+<li><strong>Database connections</strong> (PostGIS)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="why-projections-matter" class="level2">
+<h2 class="anchored" data-anchor-id="why-projections-matter">Why Projections Matter</h2>
+<p>The Earth is round, maps are flat — projections are how we translate between the two.</p>
+<section id="the-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem">The Problem</h3>
+<ul>
+<li>You can’t preserve <strong>area, distance, and angles</strong> simultaneously</li>
+<li>Different projections optimize different properties</li>
+<li><strong>Using the wrong projection → wrong analysis results!</strong></li>
+</ul>
+<p><strong>Example:</strong> Measuring area in latitude/longitude (degrees) produces incorrect results because degrees vary in physical length across latitudes.</p>
+</section>
+<section id="projection-properties" class="level3">
+<h3 class="anchored" data-anchor-id="projection-properties">Projection Properties</h3>
+<ul>
+<li><p><strong>Conformal</strong> — Preserves local angles/shape (not area)<br>
+<em>Good for navigation and maintaining local shapes</em></p></li>
+<li><p><strong>Equal-area (Equivalent)</strong> — Preserves area<br>
+<em>Use for measuring and comparing spatial extents</em></p></li>
+<li><p><strong>Equidistant</strong> — Preserves distance from one or more points or along certain lines</p></li>
+<li><p><strong>Azimuthal</strong> — Preserves direction (azimuth) from the center point<br>
+<em>Good for radial analyses</em></p></li>
+<li><p><strong>Compromise</strong> — Balances distortions (neither conformal nor equal-area)<br>
+<em>Useful for world maps</em></p></li>
+</ul>
+</section>
+<section id="common-projection-families-when-to-use-them" class="level3">
+<h3 class="anchored" data-anchor-id="common-projection-families-when-to-use-them">Common Projection Families &amp; When to Use Them</h3>
+<section id="mercator-web-mercator-conformal" class="level4">
+<h4 class="anchored" data-anchor-id="mercator-web-mercator-conformal">Mercator / Web Mercator (Conformal)</h4>
+<ul>
+<li><strong>Use for:</strong> Web tiles and interactive maps (EPSG:3857)</li>
+<li><strong>Caveat:</strong> Strongly distorts area near poles — avoid for area/distance measurement</li>
+</ul>
+</section>
+<section id="transverse-mercator-conformal" class="level4">
+<h4 class="anchored" data-anchor-id="transverse-mercator-conformal">Transverse Mercator (Conformal)</h4>
+<ul>
+<li><strong>Use for:</strong> Narrow north–south regions; basis for UTM and many State Plane zones</li>
+<li><strong>Good for:</strong> Accurate local distances and angles within a zone</li>
+</ul>
+</section>
+<section id="lambert-conformal-conic-conformal" class="level4">
+<h4 class="anchored" data-anchor-id="lambert-conformal-conic-conformal">Lambert Conformal Conic (Conformal)</h4>
+<ul>
+<li><strong>Use for:</strong> Mid-latitude, east–west extents (states, provinces)</li>
+<li><strong>Good for:</strong> Mapping regions with wide east–west extent</li>
+</ul>
+</section>
+<section id="albers-equal-area-conic-equal-area" class="level4">
+<h4 class="anchored" data-anchor-id="albers-equal-area-conic-equal-area">Albers Equal-Area Conic (Equal-area)</h4>
+<ul>
+<li><strong>Use for:</strong> Regional/national area comparisons (e.g., CONUS workflows)</li>
+<li><strong>Example:</strong> NAD83 / CONUS Albers (often EPSG:5070) — preferred when you need accurate areas for the contiguous U.S.</li>
+</ul>
+</section>
+<section id="azimuthal-stereographic-polar-stereographic" class="level4">
+<h4 class="anchored" data-anchor-id="azimuthal-stereographic-polar-stereographic">Azimuthal / Stereographic / Polar Stereographic</h4>
+<ul>
+<li><strong>Use for:</strong> Polar regions or analyses centered on a point (e.g., radio propagation, viewsheds)</li>
+</ul>
+</section>
+<section id="utm-universal-transverse-mercator" class="level4">
+<h4 class="anchored" data-anchor-id="utm-universal-transverse-mercator">UTM (Universal Transverse Mercator)</h4>
+<ul>
+<li><strong>Use for:</strong> Local to regional measurements</li>
+<li>Divides the globe into zones for high accuracy within each zone</li>
+<li><strong>EPSG codes:</strong> Follow patterns like 326## (WGS84 northern hemisphere + zone number)</li>
+</ul>
+</section>
+<section id="compromise-projections-robinson-winkel-tripel" class="level4">
+<h4 class="anchored" data-anchor-id="compromise-projections-robinson-winkel-tripel">Compromise Projections (Robinson, Winkel Tripel)</h4>
+<ul>
+<li><strong>Use for:</strong> Pleasing world maps where no single property is critical</li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="spatial-subsetting" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-subsetting">Spatial Subsetting</h2>
+<p>Extract features based on <strong>spatial relationships</strong> between layers.</p>
+<p><strong>Example functions:</strong> ```r st_filter() st_intersects() st_touches() st_within()</p>
 
 
 </section>
