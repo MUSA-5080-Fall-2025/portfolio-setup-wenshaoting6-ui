@@ -26,7 +26,7 @@ website:
         menu:
           - href: Assignemnt/assignment1_tim.qmd 
             text: Assignment 1
-          - href: Assignment/assignment2_tim.qmd
+          - href: Assignemnt/assignment2_tim.qmd
             text: Assignment 2
 
             
