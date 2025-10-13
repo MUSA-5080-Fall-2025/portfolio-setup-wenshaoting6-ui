@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-08">
 
-<title>Tim Wen - Week 2 Notes: Algorithmic Decision Making &amp; Census Data – Tim Wen - MUSA 5080 Portfolio</title>
+<title>Tim Wen - Week 5 Notes: sf / Projection – Tim Wen - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ffa9a6279353761231ec249df0a7fdd3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -165,10 +165,34 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#anscombes-quartet" id="toc-anscombes-quartet" class="nav-link active" data-scroll-target="#anscombes-quartet"><strong>Anscombe’s Quartet</strong></a></li>
-  <li><a href="#ethical-data-communication" id="toc-ethical-data-communication" class="nav-link" data-scroll-target="#ethical-data-communication"><strong>Ethical Data Communication</strong></a></li>
-  <li><a href="#census-data-considerations" id="toc-census-data-considerations" class="nav-link" data-scroll-target="#census-data-considerations"><strong>Census Data Considerations</strong></a></li>
-  <li><a href="#ggplot2-basics" id="toc-ggplot2-basics" class="nav-link" data-scroll-target="#ggplot2-basics"><strong><code>ggplot2</code> Basics</strong></a></li>
+  <li><a href="#formalizing-the-relationship" id="toc-formalizing-the-relationship" class="nav-link active" data-scroll-target="#formalizing-the-relationship">Formalizing the Relationship</a>
+  <ul class="collapse">
+  <li><a href="#what-is-f" id="toc-what-is-f" class="nav-link" data-scroll-target="#what-is-f">What is ( f )?</a></li>
+  </ul></li>
+  <li><a href="#why-estimate-f" id="toc-why-estimate-f" class="nav-link" data-scroll-target="#why-estimate-f">Why Estimate ( f )?</a></li>
+  <li><a href="#why-linear-regression" id="toc-why-linear-regression" class="nav-link" data-scroll-target="#why-linear-regression">Why Linear Regression?</a>
+  <ul class="collapse">
+  <li><a href="#advantages" id="toc-advantages" class="nav-link" data-scroll-target="#advantages">Advantages</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
+  <li><a href="#connection-to-week-2-algorithmic-bias" id="toc-connection-to-week-2-algorithmic-bias" class="nav-link" data-scroll-target="#connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</a></li>
+  <li><a href="#the-problem-overfitting" id="toc-the-problem-overfitting" class="nav-link" data-scroll-target="#the-problem-overfitting">The Problem: Overfitting</a></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#traintest-split" id="toc-traintest-split" class="nav-link" data-scroll-target="#traintest-split">Train/Test Split</a></li>
+  <li><a href="#evaluate-predictions" id="toc-evaluate-predictions" class="nav-link" data-scroll-target="#evaluate-predictions">Evaluate Predictions</a></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-Validation</a></li>
+  </ul></li>
+  <li><a href="#key-regression-assumptions" id="toc-key-regression-assumptions" class="nav-link" data-scroll-target="#key-regression-assumptions">Key Regression Assumptions</a>
+  <ul class="collapse">
+  <li><a href="#linearity" id="toc-linearity" class="nav-link" data-scroll-target="#linearity">1. Linearity</a></li>
+  <li><a href="#constant-variance" id="toc-constant-variance" class="nav-link" data-scroll-target="#constant-variance">2. Constant Variance</a></li>
+  <li><a href="#normality-of-residuals" id="toc-normality-of-residuals" class="nav-link" data-scroll-target="#normality-of-residuals">3. Normality of Residuals</a></li>
+  <li><a href="#no-multicollinearity" id="toc-no-multicollinearity" class="nav-link" data-scroll-target="#no-multicollinearity">4. No Multicollinearity</a></li>
+  <li><a href="#no-influential-outliers" id="toc-no-influential-outliers" class="nav-link" data-scroll-target="#no-influential-outliers">5. No Influential Outliers</a></li>
+  </ul></li>
+  <li><a href="#improving-the-model" id="toc-improving-the-model" class="nav-link" data-scroll-target="#improving-the-model">Improving the Model</a></li>
+  <li><a href="#the-regression-workflow" id="toc-the-regression-workflow" class="nav-link" data-scroll-target="#the-regression-workflow">The Regression Workflow</a></li>
   </ul>
 </nav>
     </div>
@@ -177,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tim Wen - Week 2 Notes: Algorithmic Decision Making &amp; Census Data</h1>
+<h1 class="title">Tim Wen - Week 5 Notes: sf / Projection</h1>
 </div>
 
 
@@ -200,41 +224,208 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="anscombes-quartet" class="level2">
-<h2 class="anchored" data-anchor-id="anscombes-quartet"><strong>Anscombe’s Quartet</strong></h2>
-<blockquote class="blockquote">
-<p><em>Four datasets with identical summary statistics can reveal completely different patterns when visualized.</em></p>
-</blockquote>
-<p><strong>Why this matters:</strong> - Summary statistics can hide critical patterns. - Outliers may represent important or vulnerable communities. - Relationships aren’t always linear. - Visual inspection reveals potential data quality issues.</p>
-<hr>
-</section>
-<section id="ethical-data-communication" class="level2">
-<h2 class="anchored" data-anchor-id="ethical-data-communication"><strong>Ethical Data Communication</strong></h2>
-<p>Principles to follow: - Create <strong>honest, transparent visualizations</strong>. - Always <strong>assess and communicate data quality</strong>. - Consider <strong>who might be harmed</strong> by uncertain or misleading data.</p>
-<p><strong>Common problems in government data presentation:</strong> - Misleading scales or axes. - Cherry-picked time periods. - Hidden or ignored uncertainty. - Lack of context about data reliability.</p>
-<hr>
-</section>
-<section id="census-data-considerations" class="level2">
-<h2 class="anchored" data-anchor-id="census-data-considerations"><strong>Census Data Considerations</strong></h2>
+<section id="formalizing-the-relationship" class="level2">
+<h2 class="anchored" data-anchor-id="formalizing-the-relationship">Formalizing the Relationship</h2>
+<p>For any quantitative response ( Y ) and predictors ( X_1, X_2, , X_p ):</p>
+<p>[ Y = f(X) + ]</p>
+<p>Where:</p>
 <ul>
-<li><strong>Block Groups:</strong>
-<ul>
-<li>Higher <em>Margins of Error (MOE)</em> due to smaller populations.</li>
-</ul></li>
-<li><strong>Census Tracts:</strong>
-<ul>
-<li>Lower <em>MOE</em> because they cover larger populations.</li>
-</ul></li>
+<li>( f ): systematic information ( X ) provides about ( Y )<br>
+</li>
+<li>( ): random error (irreducible)</li>
 </ul>
-<blockquote class="blockquote">
-<p><strong>Key takeaway:</strong> The smaller the population sample, the higher the uncertainty.</p>
-</blockquote>
+<section id="what-is-f" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-f">What is ( f )?</h3>
+<p>( f ) represents the true relationship between predictors and the outcome:</p>
+<ul>
+<li>It’s fixed but unknown<br>
+</li>
+<li>It’s what we’re trying to estimate<br>
+</li>
+<li>Different ( X ) values produce different ( Y ) values through ( f )</li>
+</ul>
+<p><strong>Example</strong></p>
+<ul>
+<li>( Y ): median income<br>
+</li>
+<li>( X ): population, education, poverty rate<br>
+</li>
+<li>( f ): how these factors systematically relate to income</li>
+</ul>
 <hr>
 </section>
-<section id="ggplot2-basics" class="level2">
-<h2 class="anchored" data-anchor-id="ggplot2-basics"><strong><code>ggplot2</code> Basics</strong></h2>
-<p>Structure for building visualizations:</p>
-<p>```r g &lt;- ggplot(data) + aes(x = , y = ) + geom_…()</p>
+</section>
+<section id="why-estimate-f" class="level2">
+<h2 class="anchored" data-anchor-id="why-estimate-f">Why Estimate ( f )?</h2>
+<p>Two main reasons:</p>
+<ol type="1">
+<li><strong>Prediction</strong><br>
+</li>
+<li><strong>Inference</strong></li>
+</ol>
+<p><strong>Key Difference</strong></p>
+<ul>
+<li><strong>Parametric (blue)</strong>: Assume ( f ) is linear, estimate ( _0 ) and ( _1 )<br>
+</li>
+<li><strong>Non-parametric (green)</strong>: Let the data determine the shape of ( f )</li>
+</ul>
+<hr>
+</section>
+<section id="why-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="why-linear-regression">Why Linear Regression?</h2>
+<section id="advantages" class="level3">
+<h3 class="anchored" data-anchor-id="advantages">Advantages</h3>
+<ul>
+<li>Simple and interpretable<br>
+</li>
+<li>Well-understood properties<br>
+</li>
+<li>Works remarkably well for many problems<br>
+</li>
+<li>Foundation for more complex methods</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes linearity (we’ll test this)<br>
+</li>
+<li>Sensitive to outliers<br>
+</li>
+<li>Makes several assumptions (we’ll check these)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="connection-to-week-2-algorithmic-bias" class="level2">
+<h2 class="anchored" data-anchor-id="connection-to-week-2-algorithmic-bias">Connection to Week 2: Algorithmic Bias</h2>
+<p>Remember the healthcare algorithm that discriminated?</p>
+<ul>
+<li><strong>Model goal:</strong> Predicted healthcare needs using <em>costs</em> as a proxy<br>
+</li>
+<li><strong>Technical view:</strong> Probably had good ( R^2 ), low prediction error → good <em>fit</em><br>
+</li>
+<li><strong>Ethical issue:</strong> Learned and amplified existing discrimination</li>
+</ul>
+<hr>
+</section>
+<section id="the-problem-overfitting" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-overfitting">The Problem: Overfitting</h2>
+<p>Three scenarios:</p>
+<ol type="1">
+<li><strong>Underfitting:</strong> Model too simple (high bias)<br>
+</li>
+<li><strong>Good fit:</strong> Captures pattern without noise<br>
+</li>
+<li><strong>Overfitting:</strong> Memorizes training data (high variance)</li>
+</ol>
+<hr>
+</section>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<section id="traintest-split" class="level3">
+<h3 class="anchored" data-anchor-id="traintest-split">Train/Test Split</h3>
+<ul>
+<li>Train: 70%<br>
+</li>
+<li>Test: 30%</li>
+</ul>
+</section>
+<section id="evaluate-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="evaluate-predictions">Evaluate Predictions</h3>
+<ul>
+<li><strong>Metric:</strong> RMSE (Root Mean Square Error)</li>
+</ul>
+</section>
+<section id="cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="cross-validation">Cross-Validation</h3>
+<ul>
+<li>Better approach: Use multiple train/test splits for more stable performance estimates</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="key-regression-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="key-regression-assumptions">Key Regression Assumptions</h2>
+<section id="linearity" class="level3">
+<h3 class="anchored" data-anchor-id="linearity">1. Linearity</h3>
+<ul>
+<li><strong>Assume:</strong> Relationship is linear<br>
+</li>
+<li><strong>Check:</strong> Residual plot</li>
+</ul>
+</section>
+<section id="constant-variance" class="level3">
+<h3 class="anchored" data-anchor-id="constant-variance">2. Constant Variance</h3>
+<ul>
+<li><strong>Issue:</strong> Heteroscedasticity (variance changes across ( X ))<br>
+</li>
+<li><strong>Impact:</strong> Standard errors and p-values become misleading<br>
+</li>
+<li><strong>Test:</strong> Breusch-Pagan test</li>
+</ul>
+</section>
+<section id="normality-of-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="normality-of-residuals">3. Normality of Residuals</h3>
+<ul>
+<li><strong>Assume:</strong> Residuals are normally distributed<br>
+</li>
+<li><strong>Why it matters:</strong>
+<ul>
+<li>Less critical for point predictions (unbiased regardless)<br>
+</li>
+<li>Important for confidence and prediction intervals<br>
+</li>
+<li>Needed for valid t-tests and F-tests<br>
+</li>
+</ul></li>
+<li><strong>Check:</strong> Q–Q Plot</li>
+</ul>
+</section>
+<section id="no-multicollinearity" class="level3">
+<h3 class="anchored" data-anchor-id="no-multicollinearity">4. No Multicollinearity</h3>
+<ul>
+<li>Predictors should not be highly correlated<br>
+</li>
+<li><strong>Diagnostic:</strong> VIF (Variance Inflation Factor)</li>
+</ul>
+</section>
+<section id="no-influential-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="no-influential-outliers">5. No Influential Outliers</h3>
+<ul>
+<li><strong>Test:</strong> Cook’s Distance</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="improving-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="improving-the-model">Improving the Model</h2>
+<ul>
+<li>Add more predictors<br>
+</li>
+<li>Apply log transformations<br>
+</li>
+<li>Include categorical variables</li>
+</ul>
+<hr>
+</section>
+<section id="the-regression-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="the-regression-workflow">The Regression Workflow</h2>
+<ol type="1">
+<li><strong>Understand the framework:</strong> What’s ( f )? What’s the goal?<br>
+</li>
+<li><strong>Visualize first:</strong> Does a linear model make sense?<br>
+</li>
+<li><strong>Fit the model:</strong> Estimate coefficients<br>
+</li>
+<li><strong>Evaluate performance:</strong> Train/test split, cross-validation<br>
+</li>
+<li><strong>Check assumptions:</strong> Residuals, VIF, outliers<br>
+</li>
+<li><strong>Improve if needed:</strong> Transformations, add variables<br>
+</li>
+<li><strong>Consider ethics:</strong> Who could be harmed by this model?</li>
+</ol>
 
 
 </section>
