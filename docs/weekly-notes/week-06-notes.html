@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-08">
 
-<title>Tim Wen Week 1 Notes - Course Introduction – Tim Wen - MUSA 5080 Portfolio</title>
+<title>Tim Wen - Week 6 Notes: Spatial Regression – Tim Wen - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ffa9a6279353761231ec249df0a7fdd3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -169,11 +169,42 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
-  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
-  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
-  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#limitations-of-linear-models" id="toc-limitations-of-linear-models" class="nav-link active" data-scroll-target="#limitations-of-linear-models">Limitations of Linear Models</a>
+  <ul class="collapse">
+  <li><a href="#what-does-this-model-ignore" id="toc-what-does-this-model-ignore" class="nav-link" data-scroll-target="#what-does-this-model-ignore">1. What Does This Model Ignore?</a></li>
+  <li><a href="#why-might-it-fail" id="toc-why-might-it-fail" class="nav-link" data-scroll-target="#why-might-it-fail">2. Why Might It Fail?</a></li>
+  <li><a href="#how-could-we-improve-it" id="toc-how-could-we-improve-it" class="nav-link" data-scroll-target="#how-could-we-improve-it">3. How Could We Improve It?</a></li>
+  </ul></li>
+  <li><a href="#converting-to-spatial-data" id="toc-converting-to-spatial-data" class="nav-link" data-scroll-target="#converting-to-spatial-data">Converting to Spatial Data</a></li>
+  <li><a href="#beyond-continuous-variables" id="toc-beyond-continuous-variables" class="nav-link" data-scroll-target="#beyond-continuous-variables">Beyond Continuous Variables</a></li>
+  <li><a href="#interaction-effects-when-relationships-depend" id="toc-interaction-effects-when-relationships-depend" class="nav-link" data-scroll-target="#interaction-effects-when-relationships-depend">Interaction Effects: When Relationships Depend</a>
+  <ul class="collapse">
+  <li><a href="#the-question" id="toc-the-question" class="nav-link" data-scroll-target="#the-question">The Question</a></li>
+  <li><a href="#example-scenarios" id="toc-example-scenarios" class="nav-link" data-scroll-target="#example-scenarios">Example Scenarios</a></li>
+  </ul></li>
+  <li><a href="#policy-implications" id="toc-policy-implications" class="nav-link" data-scroll-target="#policy-implications">Policy Implications</a>
+  <ul class="collapse">
+  <li><a href="#what-this-tells-us-about-bostons-housing-market" id="toc-what-this-tells-us-about-bostons-housing-market" class="nav-link" data-scroll-target="#what-this-tells-us-about-bostons-housing-market">What This Tells Us About Boston’s Housing Market</a>
+  <ul class="collapse">
+  <li><a href="#market-segmentation" id="toc-market-segmentation" class="nav-link" data-scroll-target="#market-segmentation">1. Market Segmentation</a></li>
+  <li><a href="#affordability-crisis" id="toc-affordability-crisis" class="nav-link" data-scroll-target="#affordability-crisis">2. Affordability Crisis</a></li>
+  <li><a href="#policy-design" id="toc-policy-design" class="nav-link" data-scroll-target="#policy-design">3. Policy Design</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#when-not-to-use-interactions" id="toc-when-not-to-use-interactions" class="nav-link" data-scroll-target="#when-not-to-use-interactions">When <em>Not</em> to Use Interactions</a></li>
+  <li><a href="#theory-the-u-shaped-age-effect" id="toc-theory-the-u-shaped-age-effect" class="nav-link" data-scroll-target="#theory-the-u-shaped-age-effect">Theory: The U-Shaped Age Effect</a>
+  <ul class="collapse">
+  <li><a href="#step-1-linear-model-baseline" id="toc-step-1-linear-model-baseline" class="nav-link" data-scroll-target="#step-1-linear-model-baseline">Step 1: Linear Model (Baseline)</a></li>
+  <li><a href="#step-2-add-polynomial-term" id="toc-step-2-add-polynomial-term" class="nav-link" data-scroll-target="#step-2-add-polynomial-term">Step 2: Add Polynomial Term</a></li>
+  </ul></li>
+  <li><a href="#toblers-first-law-of-geography" id="toc-toblers-first-law-of-geography" class="nav-link" data-scroll-target="#toblers-first-law-of-geography">Tobler’s First Law of Geography</a></li>
+  <li><a href="#three-approaches-to-spatial-features" id="toc-three-approaches-to-spatial-features" class="nav-link" data-scroll-target="#three-approaches-to-spatial-features">Three Approaches to Spatial Features</a>
+  <ul class="collapse">
+  <li><a href="#buffer-aggregation" id="toc-buffer-aggregation" class="nav-link" data-scroll-target="#buffer-aggregation">1️⃣ Buffer Aggregation</a></li>
+  <li><a href="#k-nearest-neighbors-knn" id="toc-k-nearest-neighbors-knn" class="nav-link" data-scroll-target="#k-nearest-neighbors-knn">2️⃣ k-Nearest Neighbors (kNN)</a></li>
+  <li><a href="#distance-to-specific-points" id="toc-distance-to-specific-points" class="nav-link" data-scroll-target="#distance-to-specific-points">3️⃣ Distance to Specific Points</a></li>
+  </ul></li>
+  <li><a href="#what-are-fixed-effects" id="toc-what-are-fixed-effects" class="nav-link" data-scroll-target="#what-are-fixed-effects">What Are Fixed Effects?</a></li>
   </ul>
 </nav>
     </div>
@@ -182,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tim Wen Week 1 Notes - Course Introduction</h1>
+<h1 class="title">Tim Wen - Week 6 Notes: Spatial Regression</h1>
 </div>
 
 
@@ -205,42 +236,184 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="key-concepts-learned" class="level2">
-<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
+<section id="limitations-of-linear-models" class="level1">
+<h1>Limitations of Linear Models</h1>
+<section id="what-does-this-model-ignore" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-this-model-ignore">1. What Does This Model Ignore?</h2>
 <ul>
-<li>Basic key features of dplyr</li>
-<li>how to use github and push everything I edited</li>
+<li><strong>Location matters!</strong> (North End vs.&nbsp;Roxbury vs.&nbsp;Back Bay)<br>
+</li>
+<li>Proximity to downtown, waterfront, parks<br>
+</li>
+<li>Nearby crime levels<br>
+</li>
+<li>School quality<br>
+</li>
+<li>Neighborhood characteristics</li>
 </ul>
 </section>
-<section id="coding-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+<section id="why-might-it-fail" class="level2">
+<h2 class="anchored" data-anchor-id="why-might-it-fail">2. Why Might It Fail?</h2>
 <ul>
-<li>select–select column</li>
-<li>filter–select the row</li>
-<li>mutate–create new column</li>
-<li>summarize–calculate statistics</li>
-<li>grouped_by–operate a group</li>
-<li>rename–rename a column</li>
-<li>%&gt;% pipe connects different command together</li>
+<li>1,000 sq ft in <strong>Back Bay ≠ Roxbury</strong><br>
+</li>
+<li>Same house, different locations → vastly different prices<br>
+</li>
+<li>“<strong>Location, location, location!</strong>”</li>
 </ul>
 </section>
-<section id="questions-challenges" class="level2">
-<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
+<section id="how-could-we-improve-it" class="level2">
+<h2 class="anchored" data-anchor-id="how-could-we-improve-it">3. How Could We Improve It?</h2>
 <ul>
-<li>I understand all the contents today!</li>
+<li>Add <strong>spatial features</strong> (crime nearby, distance to amenities)<br>
+</li>
+<li>Control for <strong>neighborhood</strong> (fixed effects)<br>
+</li>
+<li>Include <strong>interactions</strong> (e.g., does size matter more in wealthy areas?)</li>
+</ul>
+<blockquote class="blockquote">
+<p>💡 <strong>Key idea:</strong> This is exactly where <em>spatial features</em> come in!</p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="converting-to-spatial-data" class="level1">
+<h1>Converting to Spatial Data</h1>
+<ol type="1">
+<li><p><strong>Make your data spatial</strong><br>
+Convert tabular data (with coordinates) into an <code>sf</code> object.</p></li>
+<li><p><strong>Spatial join with neighborhoods</strong><br>
+Match each property to a neighborhood polygon.</p></li>
+</ol>
+<hr>
+</section>
+<section id="beyond-continuous-variables" class="level1">
+<h1>Beyond Continuous Variables</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Continuous Variables</strong></td>
+<td>Square footage, Age of house, Income levels, Distance to downtown</td>
+</tr>
+<tr class="even">
+<td><strong>Categorical Variables</strong></td>
+<td>Neighborhood, School district, Building type, Has garage? (Yes/No)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="interaction-effects-when-relationships-depend" class="level1">
+<h1>Interaction Effects: When Relationships Depend</h1>
+<section id="the-question" class="level3">
+<h3 class="anchored" data-anchor-id="the-question">The Question</h3>
+<blockquote class="blockquote">
+<p>Does the effect of one variable depend on the level of another variable?</p>
+</blockquote>
+</section>
+<section id="example-scenarios" class="level3">
+<h3 class="anchored" data-anchor-id="example-scenarios">Example Scenarios</h3>
+<ul>
+<li><strong>Housing:</strong> Does square footage matter more in wealthy neighborhoods?<br>
+</li>
+<li><strong>Education:</strong> Do tutoring effects vary by initial skill level?<br>
+</li>
+<li><strong>Public Health:</strong> Do pollution effects differ by age?</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="policy-implications" class="level1">
+<h1>Policy Implications</h1>
+<section id="what-this-tells-us-about-bostons-housing-market" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-tells-us-about-bostons-housing-market">What This Tells Us About Boston’s Housing Market</h2>
+<section id="market-segmentation" class="level3">
+<h3 class="anchored" data-anchor-id="market-segmentation">1. Market Segmentation</h3>
+<p>Boston operates as <strong>two distinct housing markets</strong>: - <strong>Luxury market:</strong> Every sq ft is premium (~$1081/sq ft)<br>
+- <strong>Standard market:</strong> Space valued, but lower premium (~$96/sq ft)</p>
+</section>
+<section id="affordability-crisis" class="level3">
+<h3 class="anchored" data-anchor-id="affordability-crisis">2. Affordability Crisis</h3>
+<ul>
+<li>The interaction <strong>amplifies inequality</strong><br>
+</li>
+<li>Large homes in wealthy areas become <strong>exponentially more expensive</strong><br>
+</li>
+<li>Creates <strong>barriers to mobility</strong> between neighborhoods</li>
 </ul>
 </section>
-<section id="connections-to-policy" class="level2">
-<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+<section id="policy-design" class="level3">
+<h3 class="anchored" data-anchor-id="policy-design">3. Policy Design</h3>
 <ul>
-<li>A lot of census data cleaning requires such coding techniques</li>
+<li><strong>One-size-fits-all policies</strong> may fail<br>
+</li>
+<li>Property tax assessments should <strong>account for neighborhood-specific valuation</strong><br>
+</li>
+<li><strong>Housing assistance</strong> needs vary dramatically by area</li>
 </ul>
+<hr>
 </section>
-<section id="reflection" class="level2">
-<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+</section>
+</section>
+<section id="when-not-to-use-interactions" class="level1">
+<h1>When <em>Not</em> to Use Interactions</h1>
 <ul>
-<li>I will apply them into data cleaning and some basic analysis on data such as calculating.</li>
+<li><strong>Small samples:</strong> Need enough data in each group<br>
+</li>
+<li><strong>Overfitting:</strong> Too many interactions make models unstable</li>
 </ul>
+<hr>
+</section>
+<section id="theory-the-u-shaped-age-effect" class="level1">
+<h1>Theory: The U-Shaped Age Effect</h1>
+<section id="step-1-linear-model-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-linear-model-baseline">Step 1: Linear Model (Baseline)</h3>
+<p>[ = _0 + _1 + ]</p>
+</section>
+<section id="step-2-add-polynomial-term" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-add-polynomial-term">Step 2: Add Polynomial Term</h3>
+<p>[ = _0 + _1 + _2 ^2 + ]</p>
+<hr>
+</section>
+</section>
+<section id="toblers-first-law-of-geography" class="level1">
+<h1>Tobler’s First Law of Geography</h1>
+<blockquote class="blockquote">
+<p>“Everything is related to everything else, but near things are more related than distant things.”</p>
+</blockquote>
+<hr>
+</section>
+<section id="three-approaches-to-spatial-features" class="level1">
+<h1>Three Approaches to Spatial Features</h1>
+<section id="buffer-aggregation" class="level3">
+<h3 class="anchored" data-anchor-id="buffer-aggregation">1️⃣ Buffer Aggregation</h3>
+<p>Count or sum events within a defined distance.</p>
+</section>
+<section id="k-nearest-neighbors-knn" class="level3">
+<h3 class="anchored" data-anchor-id="k-nearest-neighbors-knn">2️⃣ k-Nearest Neighbors (kNN)</h3>
+<p>Average distance to <em>k</em> closest events.</p>
+</section>
+<section id="distance-to-specific-points" class="level3">
+<h3 class="anchored" data-anchor-id="distance-to-specific-points">3️⃣ Distance to Specific Points</h3>
+<p>Compute straight-line distance to important locations (e.g., downtown, parks).</p>
+<hr>
+</section>
+</section>
+<section id="what-are-fixed-effects" class="level1">
+<h1>What Are Fixed Effects?</h1>
+<p><strong>Fixed Effects</strong> = Categorical variables that capture all unmeasured characteristics of a group.<br>
+They help control for differences <strong>within</strong> vs.&nbsp;<strong>between</strong> areas (e.g., neighborhoods, cities).</p>
+<hr>
 
 
 </section>
