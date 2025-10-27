@@ -36,6 +36,10 @@ website:
             text: Assignment 2
           - href: Assignemnt/Tim_Wen_appendix.qmd
             text: Mid Term
+      - text: mid term slides  
+        menu:
+          - href: presentation/presentation.qmd
+            text: Presentation
 
             
 format:
