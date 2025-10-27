@@ -1,0 +1,49 @@
+---
+title: "Tim Wen - Week 2 Notes: Algorithmic Decision Making & Census Data"
+date: "2025-09-08"
+---
+
+## **Anscombe's Quartet**
+> *Four datasets with identical summary statistics can reveal completely different patterns when visualized.*
+
+**Why this matters:**
+- Summary statistics can hide critical patterns.
+- Outliers may represent important or vulnerable communities.
+- Relationships aren’t always linear.
+- Visual inspection reveals potential data quality issues.
+
+---
+
+## **Ethical Data Communication**
+Principles to follow:
+- Create **honest, transparent visualizations**.
+- Always **assess and communicate data quality**.
+- Consider **who might be harmed** by uncertain or misleading data.
+
+**Common problems in government data presentation:**
+- Misleading scales or axes.
+- Cherry-picked time periods.
+- Hidden or ignored uncertainty.
+- Lack of context about data reliability.
+
+---
+
+## **Census Data Considerations**
+- **Block Groups:**  
+  - Higher *Margins of Error (MOE)* due to smaller populations.
+- **Census Tracts:**  
+  - Lower *MOE* because they cover larger populations.
+
+> **Key takeaway:** The smaller the population sample, the higher the uncertainty.
+
+---
+
+## **`ggplot2` Basics**
+Structure for building visualizations:
+
+```r
+g <- ggplot(data) +
+  aes(x = , y = ) + 
+  geom_...()
+
+

@@ -1,0 +1,147 @@
+---
+title: "Tim Wen - Week 5 Notes: sf / Projection"
+date: "2025-09-08"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    theme: flatly
+---
+
+## Formalizing the Relationship
+
+For any quantitative response \( Y \) and predictors \( X_1, X_2, \dots, X_p \):
+
+\[
+Y = f(X) + \varepsilon
+\]
+
+Where:
+
+- \( f \): systematic information \( X \) provides about \( Y \)  
+- \( \varepsilon \): random error (irreducible)
+
+### What is \( f \)?
+
+\( f \) represents the true relationship between predictors and the outcome:
+
+- It’s fixed but unknown  
+- It’s what we’re trying to estimate  
+- Different \( X \) values produce different \( Y \) values through \( f \)
+
+**Example**
+
+- \( Y \): median income  
+- \( X \): population, education, poverty rate  
+- \( f \): how these factors systematically relate to income  
+
+---
+
+## Why Estimate \( f \)?
+
+Two main reasons:
+
+1. **Prediction**  
+2. **Inference**
+
+**Key Difference**
+
+- **Parametric (blue)**: Assume \( f \) is linear, estimate \( \beta_0 \) and \( \beta_1 \)  
+- **Non-parametric (green)**: Let the data determine the shape of \( f \)
+
+---
+
+## Why Linear Regression?
+
+### Advantages
+- Simple and interpretable  
+- Well-understood properties  
+- Works remarkably well for many problems  
+- Foundation for more complex methods  
+
+### Limitations
+- Assumes linearity (we’ll test this)  
+- Sensitive to outliers  
+- Makes several assumptions (we’ll check these)  
+
+---
+
+## Connection to Week 2: Algorithmic Bias
+
+Remember the healthcare algorithm that discriminated?
+
+- **Model goal:** Predicted healthcare needs using *costs* as a proxy  
+- **Technical view:** Probably had good \( R^2 \), low prediction error → good *fit*  
+- **Ethical issue:** Learned and amplified existing discrimination  
+
+---
+
+## The Problem: Overfitting
+
+Three scenarios:
+
+1. **Underfitting:** Model too simple (high bias)  
+2. **Good fit:** Captures pattern without noise  
+3. **Overfitting:** Memorizes training data (high variance)
+
+---
+
+## Model Evaluation
+
+### Train/Test Split
+- Train: 70%  
+- Test: 30%
+
+### Evaluate Predictions
+- **Metric:** RMSE (Root Mean Square Error)
+
+### Cross-Validation
+- Better approach: Use multiple train/test splits for more stable performance estimates
+
+---
+
+## Key Regression Assumptions
+
+### 1. Linearity
+- **Assume:** Relationship is linear  
+- **Check:** Residual plot
+
+### 2. Constant Variance
+- **Issue:** Heteroscedasticity (variance changes across \( X \))  
+- **Impact:** Standard errors and p-values become misleading  
+- **Test:** Breusch-Pagan test  
+
+### 3. Normality of Residuals
+- **Assume:** Residuals are normally distributed  
+- **Why it matters:**  
+  - Less critical for point predictions (unbiased regardless)  
+  - Important for confidence and prediction intervals  
+  - Needed for valid t-tests and F-tests  
+- **Check:** Q–Q Plot  
+
+### 4. No Multicollinearity
+- Predictors should not be highly correlated  
+- **Diagnostic:** VIF (Variance Inflation Factor)
+
+### 5. No Influential Outliers
+- **Test:** Cook’s Distance  
+
+---
+
+## Improving the Model
+
+- Add more predictors  
+- Apply log transformations  
+- Include categorical variables  
+
+---
+
+## The Regression Workflow
+
+1. **Understand the framework:** What’s \( f \)? What’s the goal?  
+2. **Visualize first:** Does a linear model make sense?  
+3. **Fit the model:** Estimate coefficients  
+4. **Evaluate performance:** Train/test split, cross-validation  
+5. **Check assumptions:** Residuals, VIF, outliers  
+6. **Improve if needed:** Transformations, add variables  
+7. **Consider ethics:** Who could be harmed by this model?  

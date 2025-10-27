@@ -1,0 +1,26 @@
+---
+title: "Tim Wen Week 1 Notes - Course Introduction"
+date: "2025-09-08"
+---
+
+## Key Concepts Learned
+- Basic key features of dplyr
+- how to use github and push everything I edited 
+
+## Coding Techniques
+- select--select column
+- filter--select the row
+- mutate--create new column
+- summarize--calculate statistics
+- grouped_by--operate a group
+- rename--rename a column
+- %>% pipe connects different command together
+
+## Questions & Challenges
+- I understand all the contents today!
+
+## Connections to Policy
+- A lot of census data cleaning requires such coding techniques
+
+## Reflection
+- I will apply them into data cleaning and some basic analysis on data such as calculating. 
