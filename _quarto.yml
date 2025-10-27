@@ -23,6 +23,7 @@ website:
           - href: weekly-notes/week-06-notes.qmd
             text: Week 6
           - href: weekly-notes/week-07-notes.qmd
+            text: Week 7
       - text: Labs
         menu:
           - href: labs/lab 0/scripts/lab0_template.qmd
