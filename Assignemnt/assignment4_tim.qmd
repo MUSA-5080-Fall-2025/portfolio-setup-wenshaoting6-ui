@@ -254,6 +254,8 @@ ggplot() +
 Based on the map above, both the north and middle of Chicago has a huge high-high cluster of sanitation violations, while the far south of the city, which is also the suburban area, has a low-low cluster of sanitation violations.
 
 
+
+
 ## Part 4: Count Regression Models
 In this section, I first ran the poisson regression, then I check the dispersion to see if the assumption of poisson regression still holds. The results suggest I to use negative binomial regression in the end. The AIC for negative binomial is also smaller than poisson, suggesting it a better model
 ```{r}
