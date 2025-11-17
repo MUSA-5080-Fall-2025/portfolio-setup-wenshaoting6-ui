@@ -24,6 +24,10 @@ website:
             text: Week 6
           - href: notes/week-07-notes.qmd
             text: Week 7
+          - href: notes/week-09-notes.qmd
+            text: Week 9 
+          - href: notes/week-10-notes.qmd
+            text: Week 10
       - text: Labs
         menu:
           - href: labs/lab 0/scripts/lab0_template.qmd
@@ -36,6 +40,8 @@ website:
             text: Assignment 2
           - href: Assignemnt/Tim_Wen_appendix.qmd
             text: Mid Term
+          - href: Assignemnt/assignment4_tim.qmd
+            text: Assignment 4
       - text: mid term slides  
         menu:
           - href: presentation/presentation.qmd
