@@ -1,0 +1,302 @@
+---
+title: "Week 9 Study Notes: Critical Perspectives on Predictive Policing"
+author: "MUSA 5080"
+date: "November 3, 2025"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    theme: cosmo
+---
+
+
+---
+
+# Part 1: The Dirty Data Problem
+
+## What is "Dirty Data"?
+
+**Traditional Definition**: Missing, incorrect, or non-standardized data
+
+**Extended Definition (Richardson et al. 2019)**: Data derived from or influenced by corrupt, biased, and unlawful practices, including:
+
+- Intentionally manipulated data ("juking the stats")
+- Data distorted by individual and societal biases
+- Data from unconstitutional policing practices
+
+## Forms of Dirty Data
+
+### 1. Fabricated/Manipulated Data
+- False arrests with planted evidence
+- Downgraded crime classifications to meet targets
+- Pressuring victims not to file reports
+
+### 2. Systematically Biased Data
+- Over-policing of certain communities → more recorded "crime"
+- Under-policing of white-collar crime → appears less common
+- Racial profiling → disproportionate stops/arrests
+
+### 3. Missing/Incomplete Data
+- Unreported crimes (especially in over-policed areas)
+- Ignored complaints
+- Incomplete records
+
+### 4. Proxy Problems
+- Arrests ≠ crimes committed
+- Calls for service ≠ actual need
+- Gang database ≠ actual gang membership
+
+---
+
+# Part 2: The Feedback Loop Problem
+
+## The Confirmation Bias Cycle
+
+```
+Algorithm learns: "Crime happens in neighborhood X"
+           ↓
+Police sent to neighborhood X
+           ↓
+More arrests in neighborhood X (regardless of actual crime)
+           ↓
+Algorithm "confirmed": "We were right about neighborhood X!"
+           ↓
+Cycle intensifies
+```
+
+## What Gets Policed vs. What Gets Committed
+
+| Crime Type | Frequency | Policing Intensity | In Models? |
+|------------|-----------|-------------------|------------|
+| Violent Crime | Moderate | High | ✓ Yes |
+| Property Crime | High | High | ✓ Yes |
+| Drug Offenses | Very High | Racially Disparate | Sometimes |
+| White-Collar Crime | **Very High** | **Very Low** | ✗ Rarely |
+| Wage Theft | **Exceeds all robbery** | **Almost None** | ✗ Never |
+| Corporate Fraud | **$300B+ annually** | **Minimal** | ✗ Never |
+
+---
+
+# Part 3: Technical Methods
+
+## Spatial Data Structure: Fishnet Grid
+
+### Why Use a Fishnet Grid?
+- Consistent cell size (e.g., 500m × 500m)
+- No boundary bias
+- Standard approach in predictive policing
+
+---
+
+## Local Spatial Autocorrelation (Local Moran's I)
+
+### Global vs. Local Measures
+
+**Global Moran's I**: 
+- One value for entire study area
+- Answers: "Is there spatial clustering overall?"
+- Range: -1 to +1
+
+**Local Moran's I**: 
+- One value per location
+- Answers: "Where are the clusters?"
+- Identifies specific hotspots and coldspots
+
+### The Four Types of Clusters
+
+| Type | Location Value | Neighbor Values | Interpretation |
+|------|----------------|-----------------|----------------|
+| **High-High** | Above mean | Above mean | **Hotspot** |
+| **Low-Low** | Below mean | Below mean | **Coldspot** |
+| **High-Low** | Above mean | Below mean | Outlier (isolated high) |
+| **Low-High** | Below mean | Above mean | Outlier (isolated low) |
+
+---
+
+## Count Regression Models
+
+### Why Not OLS (Linear Regression)?
+
+Problems with linear regression for count data:
+1. Can predict **negative values** (impossible)
+2. Assumes **constant variance** (counts have variance ≠ mean)
+3. Assumes **continuous** outcome (counts are discrete)
+4. Assumes **normal errors** (count data is skewed)
+
+### Poisson Regression
+
+**Model**:
+$$\log(\lambda_i) = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + ... + \beta_p X_{pi}$$
+
+**Equivalently**:
+$$\lambda_i = \exp(\beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + ... + \beta_p X_{pi})$$
+
+**Key Property**: Mean = Variance = λ
+
+
+### Interpreting Coefficients
+
+| β | exp(β) | Interpretation |
+|---|--------|----------------|
+| 0.14 | 1.15 | 15% increase per unit of X |
+| -0.22 | 0.80 | 20% decrease per unit of X |
+| 0.00 | 1.00 | No effect |
+| 0.69 | 2.00 | Doubling per unit of X |
+
+### The Overdispersion Problem
+
+**Poisson Assumption**: Variance = Mean
+
+**Reality**: Variance > Mean (often MUCH larger)
+
+**Check for Overdispersion**:
+$$\text{Dispersion} = \frac{\text{Residual Deviance}}{\text{Degrees of Freedom}}$$
+
+- If ≈ 1: Poisson is fine
+- If > 1: Overdispersion
+- If > 2-3: Serious overdispersion → Use Negative Binomial
+
+### Negative Binomial Regression
+
+**Relaxes the variance = mean assumption**:
+$$\text{Var}(Y_i) = \mu_i + \alpha \mu_i^2$$
+
+## Spatial Cross-Validation
+
+### Why Standard CV Fails for Spatial Data
+
+**Problem**: Nearby observations are correlated
+- Training set includes cells adjacent to test cells
+- **Spatial leakage**: Model learns from neighbors
+- Overly optimistic performance estimates
+
+### Leave-One-Group-Out (LOGO) CV
+
+**Process**:
+1. Divide study area into groups (e.g., police districts)
+2. Hold out all cells in District 1
+3. Train model on Districts 2-N
+4. Predict for District 1
+5. Repeat for each district
+
+---
+
+## Baseline Comparison: Kernel Density Estimation
+
+### Why Compare to KDE?
+
+- Simplest spatial prediction method
+- No predictors, just past locations
+- If our model doesn't beat KDE, we're wasting complexity
+
+
+# Part 4: Critical Analysis Framework
+
+## Questions to Ask About Any Predictive Policing System
+
+### 1. Data Provenance
+- What time period does training data cover?
+- Were there civil rights investigations during that period?
+- Were there documented cases of data manipulation?
+- What evidence exists that data is accurate?
+
+### 2. Variable Selection
+- What specific variables are used?
+- How might each variable embed bias?
+- What's excluded and why?
+- Who made these choices?
+
+### 3. Validation
+- How is accuracy measured?
+- What counts as "success"?
+- Are error rates reported by neighborhood?
+- Who experiences false positives vs. false negatives?
+
+### 4. Deployment
+- How do predictions translate to action?
+- What discretion do officers have?
+- Are social services actually offered?
+- What are the measurable outcomes?
+
+### 5. Transparency & Accountability
+- Is the methodology public?
+- Can community members access their own "risk scores"?
+- Is there a process to challenge predictions?
+- Who monitors for disparate impact?
+
+### 6. Alternatives
+- What non-punitive interventions were considered?
+- Could these resources address root causes instead?
+- What would actual community safety investment look like?
+
+---
+
+# Part 5: Who Bears the Costs?
+
+## False Positives (Predicted High Risk, No Crime Occurs)
+
+**Cost to individuals**:
+- Increased police presence/harassment
+- Stops, searches without cause
+- Trauma, stress
+- Normalized surveillance
+
+**Cost to communities**:
+- Broken trust with police
+- Reduced reporting of actual crimes
+- Economic harm
+- Quality of life degradation
+
+## False Negatives (Predicted Low Risk, Crime Occurs)
+
+**Cost to individuals**:
+- Inadequate police response
+- Victimization
+- Property loss
+
+**Cost to communities**:
+- Unequal protection
+- Perception of being "written off"
+- Actual under-policing
+
+**Who experiences each?**
+- Both false positives AND false negatives disproportionately affect Black/Brown communities
+
+---
+
+# Part 6: Alternative Approaches
+
+## Predictive Models for Justice, Not Policing
+
+**Instead of predicting crime → deploy police**
+
+**Consider predicting**:
+1. **Eviction risk** → Provide legal aid proactively
+2. **Health crisis** → Deploy community health workers
+3. **School dropout** → Intensive support services
+4. **Food insecurity** → Expand access programs
+
+**Key differences**:
+- Predictions lead to **help**, not punishment
+- False positives = extra support (lower harm)
+- Builds trust instead of eroding it
+- Addresses root causes
+
+---
+
+# Key Takeaways
+
+:::{.callout-important}
+## Remember
+
+1. **All crime data is socially constructed** - It reflects policing, not just crime
+2. **Historical harms persist in data** - Dirty data trains biased systems
+3. **Vendors are not accountable** - Black boxes prevent oversight
+4. **Feedback loops amplify inequality** - Predictions become self-fulfilling
+5. **Technical accuracy ≠ social justice** - A "good" model can be ethically terrible
+6. **Alternatives exist** - We could predict need instead of threat
+7. **Your choices matter** - How you build models has real consequences
+:::
+```
+

@@ -169,6 +169,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../notes/week-07-notes.html">
  <span class="dropdown-text">Week 7</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../notes/week-09-notes.html">
+ <span class="dropdown-text">Week 9</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notes/week-10-notes.html">
+ <span class="dropdown-text">Week 10</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -235,6 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#part-1-data-loading-exploration" id="toc-part-1-data-loading-exploration" class="nav-link" data-scroll-target="#part-1-data-loading-exploration">Part 1: Data Loading &amp; Exploration</a></li>
   <li><a href="#part-2-fishnet-grid-creation" id="toc-part-2-fishnet-grid-creation" class="nav-link" data-scroll-target="#part-2-fishnet-grid-creation">Part 2: Fishnet Grid Creation</a></li>
   <li><a href="#part-3-spatial-features" id="toc-part-3-spatial-features" class="nav-link" data-scroll-target="#part-3-spatial-features">Part 3: Spatial Features</a></li>
+  <li><a href="#part-4-count-regression-models" id="toc-part-4-count-regression-models" class="nav-link" data-scroll-target="#part-4-count-regression-models">Part 4: Count Regression Models</a></li>
   <li><a href="#part-5-spatial-cross-validation" id="toc-part-5-spatial-cross-validation" class="nav-link" data-scroll-target="#part-5-spatial-cross-validation">Part 5: Spatial Cross-Validation</a></li>
   <li><a href="#part-6-model-evaluation" id="toc-part-6-model-evaluation" class="nav-link" data-scroll-target="#part-6-model-evaluation">Part 6: Model Evaluation</a></li>
   </ul>
@@ -554,7 +563,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Based on the map above, both the north and middle of Chicago has a huge high-high cluster of sanitation violations, while the far south of the city, which is also the suburban area, has a low-low cluster of sanitation violations. ## Part 4: Count Regression Models In this section, I first ran the poisson regression, then I check the dispersion to see if the assumption of poisson regression still holds. The results suggest I to use negative binomial regression in the end. The AIC for negative binomial is also smaller than poisson, suggesting it a better model</p>
+<p>Based on the map above, both the north and middle of Chicago has a huge high-high cluster of sanitation violations, while the far south of the city, which is also the suburban area, has a low-low cluster of sanitation violations.</p>
+</section>
+<section id="part-4-count-regression-models" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-count-regression-models">Part 4: Count Regression Models</h2>
+<p>In this section, I first ran the poisson regression, then I check the dispersion to see if the assumption of poisson regression still holds. The results suggest I to use negative binomial regression in the end. The AIC for negative binomial is also smaller than poisson, suggesting it a better model</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>

@@ -329,6 +329,167 @@
     "text": "Reflection\n\nI will apply them into data cleaning and some basic analysis on data such as calculating."
   },
   {
+    "objectID": "notes/week-10-notes.html",
+    "href": "notes/week-10-notes.html",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "",
+    "text": "Logistic regression is perfect for binary classification problems in policy:\n\n\n\nWill someone reoffend? (recidivism)\nWill someone appear for court? (flight risk)\n\n\n\n\n\nWill patient develop disease? (risk assessment)\nWill treatment be successful? (outcome prediction)\n\n\n\n\n\nWill loan default? (credit risk)\nWill person get hired? (employment prediction)\n\n\n\n\n\nWill building be demolished? (blight prediction)\nWill household participate in program? (uptake prediction)\n\n\n\n\n\n\n\n\nThe fundamental issue: Linear regression can predict values outside [0, 1]\n\nPredictions can be &gt; 1 or &lt; 0 (makes no sense for probability!)\nAssumes constant effect across range (not realistic)\nViolates regression assumptions (errors aren’t normal)\n\n\n\n\nIf we use linear regression to predict whether a student passes (1) or fails (0) based on study hours:\n\nFor high study hours: might predict 1.3 (impossible - can’t be more than 100% likely)\nFor low study hours: might predict -0.2 (impossible - can’t be negative probability)\n\nLinear regression treats outcomes as continuous, but binary outcomes are fundamentally different."
+  },
+  {
+    "objectID": "notes/week-10-notes.html#when-do-we-use-logistic-regression",
+    "href": "notes/week-10-notes.html#when-do-we-use-logistic-regression",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "",
+    "text": "Logistic regression is perfect for binary classification problems in policy:\n\n\n\nWill someone reoffend? (recidivism)\nWill someone appear for court? (flight risk)\n\n\n\n\n\nWill patient develop disease? (risk assessment)\nWill treatment be successful? (outcome prediction)\n\n\n\n\n\nWill loan default? (credit risk)\nWill person get hired? (employment prediction)\n\n\n\n\n\nWill building be demolished? (blight prediction)\nWill household participate in program? (uptake prediction)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#why-linear-regression-doesnt-work",
+    "href": "notes/week-10-notes.html#why-linear-regression-doesnt-work",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "",
+    "text": "The fundamental issue: Linear regression can predict values outside [0, 1]\n\nPredictions can be &gt; 1 or &lt; 0 (makes no sense for probability!)\nAssumes constant effect across range (not realistic)\nViolates regression assumptions (errors aren’t normal)\n\n\n\n\nIf we use linear regression to predict whether a student passes (1) or fails (0) based on study hours:\n\nFor high study hours: might predict 1.3 (impossible - can’t be more than 100% likely)\nFor low study hours: might predict -0.2 (impossible - can’t be negative probability)\n\nLinear regression treats outcomes as continuous, but binary outcomes are fundamentally different."
+  },
+  {
+    "objectID": "notes/week-10-notes.html#the-solution-transform-the-problem",
+    "href": "notes/week-10-notes.html#the-solution-transform-the-problem",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "The Solution: Transform the Problem",
+    "text": "The Solution: Transform the Problem\nInstead of predicting Y directly, predict the probability that Y = 1.\n\nThe Logistic Function\n\\[p(X) = \\frac{1}{1+e^{-(\\beta_0 + \\beta_1X_1 + ... + \\beta_kX_k)}}\\]\nKey properties: - Always outputs values between 0 and 1 - S-shaped curve - Smooth transition from 0 to 1\n\n\nWhy It Works\n\nWhen \\(\\beta_0 + \\beta_1X_1 + ... = 0\\): probability = 0.5\nWhen very positive: probability approaches 1\nWhen very negative: probability approaches 0\nNever exceeds 1 or goes below 0"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#the-logit-transformation",
+    "href": "notes/week-10-notes.html#the-logit-transformation",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "The Logit Transformation",
+    "text": "The Logit Transformation\n\nWorking with Log-Odds\nBehind the scenes, we work with log-odds, not probabilities directly.\nOdds: \\[\\text{Odds} = \\frac{p}{1-p}\\]\nLog-Odds (Logit): \\[\\text{logit}(p) = \\ln\\left(\\frac{p}{1-p}\\right)\\]\nThis creates a linear relationship: \\[\\ln\\left(\\frac{p}{1-p}\\right) = \\beta_0 + \\beta_1X_1 + \\beta_2X_2 + ...\\]\n\n\nWhy This Matters\n\nCoefficients represent changes in log-odds (like linear regression!)\nWe exponentiate coefficients to get odds ratios: \\(e^{\\beta}\\)\nOR &gt; 1: predictor increases odds of outcome\nOR &lt; 1: predictor decreases odds of outcome\nOR = 1: no effect"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#understanding-coefficients",
+    "href": "notes/week-10-notes.html#understanding-coefficients",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Understanding Coefficients",
+    "text": "Understanding Coefficients\n\nRaw Coefficients (Log-Odds Scale)\nExample: Predicting email spam\n\n\n\nCoefficient\nValue\nInterpretation\n\n\n\n\nIntercept\n-4.2\nLog-odds when all predictors = 0\n\n\nexclamation_marks\n0.45\nEach ! increases log-odds by 0.45\n\n\ncontains_free\n2.1\nHaving “free” increases log-odds by 2.1\n\n\nlength\n-0.003\nEach character decreases log-odds by 0.003\n\n\n\nProblem: Log-odds are hard to interpret intuitively!\n\n\nOdds Ratios (Exponentiated Coefficients)\nConvert to odds ratios: \\(OR = e^{\\beta}\\)\n\n\n\n\n\n\n\n\n\nVariable\nCoefficient\nOdds Ratio\nInterpretation\n\n\n\n\nexclamation_marks\n0.45\n1.57\nEach ! multiplies odds by 1.57 (57% increase)\n\n\ncontains_free\n2.1\n8.17\n“Free” multiplies odds by 8.17\n\n\nlength\n-0.003\n0.997\nEach character multiplies odds by 0.997\n\n\n\n\n\nConverting to Probability\nFrom odds to probability: \\[p = \\frac{\\text{odds}}{1 + \\text{odds}}\\]\nExample: If odds = 3, then \\(p = \\frac{3}{1+3} = 0.75\\) (75% probability)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#from-probabilities-to-decisions",
+    "href": "notes/week-10-notes.html#from-probabilities-to-decisions",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "From Probabilities to Decisions",
+    "text": "From Probabilities to Decisions\nThe logistic regression model outputs probabilities between 0 and 1.\nBut policy decisions require binary choices: spam/not spam, approve/deny, intervene/don’t intervene.\n\nThe Threshold Decision\nKey question: What probability triggers action?\n\nThreshold = 0.5 (common default): Predict “yes” if p &gt; 0.5\nThreshold = 0.3 (more aggressive): Predict “yes” if p &gt; 0.3\nThreshold = 0.7 (more conservative): Predict “yes” if p &gt; 0.7\n\n\n\nExample: Email Spam Filter\nIf predicted probability of spam = 0.62:\n\nThreshold = 0.5 → Classify as spam\nThreshold = 0.7 → Classify as NOT spam\n\nThere is no universal “right” threshold - it depends on the costs of each type of error."
+  },
+  {
+    "objectID": "notes/week-10-notes.html#the-confusion-matrix",
+    "href": "notes/week-10-notes.html#the-confusion-matrix",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "The Confusion Matrix",
+    "text": "The Confusion Matrix\nWhen we make binary predictions, four outcomes are possible:\n\nThe Four Outcomes\n\n\n\n\n\n\n\n\n\nActual: Positive\nActual: Negative\n\n\n\n\nPredicted: Positive\nTrue Positive (TP) ✓\nFalse Positive (FP) ✗\n\n\nPredicted: Negative\nFalse Negative (FN) ✗\nTrue Negative (TN) ✓\n\n\n\n\n\nUnderstanding Each Cell\n\nTrue Positive (TP): Correctly predicted positive\nTrue Negative (TN): Correctly predicted negative\nFalse Positive (FP): Incorrectly predicted positive (Type I error)\nFalse Negative (FN): Incorrectly predicted negative (Type II error)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#performance-metrics",
+    "href": "notes/week-10-notes.html#performance-metrics",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Performance Metrics",
+    "text": "Performance Metrics\n\nSensitivity (Recall, True Positive Rate)\n\\[\\text{Sensitivity} = \\frac{TP}{TP + FN}\\]\nInterpretation: Of all actual positives, how many did we catch?\nExample: Of 100 actual spam emails, we correctly identified 85 - Sensitivity = 85/100 = 0.85 (85%)\n\n\nSpecificity (True Negative Rate)\n\\[\\text{Specificity} = \\frac{TN}{TN + FP}\\]\nInterpretation: Of all actual negatives, how many did we correctly identify?\nExample: Of 900 legitimate emails, we correctly identified 850 - Specificity = 850/900 = 0.944 (94.4%)\n\n\nPrecision (Positive Predictive Value)\n\\[\\text{Precision} = \\frac{TP}{TP + FP}\\]\nInterpretation: Of all our positive predictions, how many were correct?\nExample: We flagged 135 emails as spam, 85 actually were - Precision = 85/135 = 0.630 (63%)\n\n\nAccuracy\n\\[\\text{Accuracy} = \\frac{TP + TN}{TP + TN + FP + FN}\\]\nWarning: Accuracy can be misleading with imbalanced data!"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#the-sensitivity-specificity-trade-off",
+    "href": "notes/week-10-notes.html#the-sensitivity-specificity-trade-off",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "The Sensitivity-Specificity Trade-off",
+    "text": "The Sensitivity-Specificity Trade-off\nAs you increase the threshold: - ↓ Sensitivity (catch fewer true positives) - ↑ Specificity (fewer false alarms) - ↓ False Positive Rate - ↑ False Negative Rate\nAs you decrease the threshold: - ↑ Sensitivity (catch more true positives) - ↓ Specificity (more false alarms) - ↑ False Positive Rate - ↓ False Negative Rate\n\nVisual Understanding\nThreshold = 0.3 (Low bar - flag more as positive)\nMore positives predicted\n├─ More true positives (↑ sensitivity) ✓\n└─ More false positives (↓ specificity) ✗\nThreshold = 0.7 (High bar - flag fewer as positive)\nFewer positives predicted\n├─ Fewer false positives (↑ specificity) ✓\n└─ Fewer true positives (↓ sensitivity) ✗"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#two-policy-scenarios",
+    "href": "notes/week-10-notes.html#two-policy-scenarios",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Two Policy Scenarios",
+    "text": "Two Policy Scenarios\n\nScenario A: Rare, Deadly Disease Screening\nContext: - Disease is rare but fatal if untreated - Treatment is safe with minor side effects\nGoal: Don’t miss any cases (high sensitivity)\nAcceptable: Some false positives (unnecessary treatment)\nThreshold choice: Low (e.g., 0.2) - Catch all cases, even at risk of false alarms - Better to treat unnecessarily than miss a case\n\n\nScenario B: High-Risk Individual Identification\nContext: - Limited intervention slots - False positives waste resources - False negatives miss opportunities to help\nGoal: Use resources efficiently (high precision)\nThreshold choice: High (e.g., 0.7) - Only intervene when very confident - Depends on: Cost of intervention vs. cost of missed case"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#what-is-an-roc-curve",
+    "href": "notes/week-10-notes.html#what-is-an-roc-curve",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "What Is an ROC Curve?",
+    "text": "What Is an ROC Curve?\nROC = Receiver Operating Characteristic\nOriginally developed for radar signal detection in WWII.\n\nWhat It Shows\n\nEvery possible threshold in one visualization\nTrade-off between True Positive Rate (Sensitivity) and False Positive Rate (1 - Specificity)\nOverall model discrimination ability\n\n\n\nHow to Read It\n\nX-axis: False Positive Rate = 1 - Specificity\nY-axis: True Positive Rate = Sensitivity\nDiagonal line: Random guessing (AUC = 0.5)\nTop-left corner: Perfect prediction (AUC = 1.0)\nCurve above diagonal: Better than random\nCurve below diagonal: Worse than random (model is backwards!)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#area-under-the-curve-auc",
+    "href": "notes/week-10-notes.html#area-under-the-curve-auc",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Area Under the Curve (AUC)",
+    "text": "Area Under the Curve (AUC)\n\nInterpreting AUC\nAUC summarizes overall model performance:\n\n\n\nAUC Range\nInterpretation\n\n\n\n\n1.0\nPerfect classifier\n\n\n0.9 - 1.0\nExcellent\n\n\n0.8 - 0.9\nGood\n\n\n0.7 - 0.8\nAcceptable\n\n\n0.6 - 0.7\nPoor\n\n\n0.5\nNo better than random guessing\n\n\n&lt; 0.5\nWorse than random (model backwards!)\n\n\n\n\n\nWhat AUC Tells You\nAUC = 0.85 means: - If you pick a random positive case and a random negative case - 85% of the time, the model assigns higher probability to the positive case\n\n\nWhat AUC Doesn’t Tell You\n\nWhich threshold to use (you still need to choose!)\nPerformance with class imbalance (can be misleading)\nEquity implications (groups may have different AUCs)\nCost of different errors (treats FP and FN equally)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#key-points-on-roc-curves",
+    "href": "notes/week-10-notes.html#key-points-on-roc-curves",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Key Points on ROC Curves",
+    "text": "Key Points on ROC Curves\n\nThe Shape Tells a Story\nCurve hugs top-left: Excellent separation between classes - High sensitivity AND high specificity possible - Can choose threshold with minimal trade-off\nCurve near diagonal: Poor separation - No threshold gives good performance - Model barely better than guessing\nCurve has steep initial rise: Good for high-sensitivity applications - Can achieve high sensitivity with low FP rate"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#the-core-problem-disparate-impact",
+    "href": "notes/week-10-notes.html#the-core-problem-disparate-impact",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "The Core Problem: Disparate Impact",
+    "text": "The Core Problem: Disparate Impact\nA model can be “accurate” overall but perform very differently across groups.\n\nExample: Recidivism Model\n\n\n\nGroup\nSensitivity\nSpecificity\nFalse Positive Rate\n\n\n\n\nOverall\n0.72\n0.68\n0.32\n\n\nGroup A\n0.78\n0.74\n0.26\n\n\nGroup B\n0.64\n0.58\n0.42\n\n\n\nGroup B experiences: - Lower sensitivity (more people who will reoffend are missed) - Lower specificity (more people who won’t reoffend are flagged) - Higher false positive rate (more unjust interventions)\nThis is algorithmic bias in action."
+  },
+  {
+    "objectID": "notes/week-10-notes.html#case-study-compas",
+    "href": "notes/week-10-notes.html#case-study-compas",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Case Study: COMPAS",
+    "text": "Case Study: COMPAS\nCOMPAS: Commercial algorithm used in criminal justice to predict recidivism\n\nProPublica Investigation (2016)\nFindings: - Similar overall accuracy for Black and White defendants - BUT: False positive rates differed dramatically - Black defendants: 45% false positive rate - White defendants: 23% false positive rate - Black defendants twice as likely to be incorrectly labeled “high risk”\n\n\nThe Implications\nFor Black defendants: - More likely to be denied bail - Longer sentences - More restrictive parole conditions - Based on incorrect predictions\nKey insight: Overall accuracy masks disparate impact\n\n\nThe Fairness Impossibility Theorem\nDifferent definitions of fairness can’t all be satisfied simultaneously:\n\nCalibration: Same predicted probability means same actual risk across groups\nEqualized odds: Same true/false positive rates across groups\nPredictive parity: Same precision across groups\n\nYou can’t have all three! Must choose which type of fairness matters most for your context."
+  },
+  {
+    "objectID": "notes/week-10-notes.html#testing-for-disparate-impact",
+    "href": "notes/week-10-notes.html#testing-for-disparate-impact",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Testing for Disparate Impact",
+    "text": "Testing for Disparate Impact\n\nWhat to Check\n\nOverall performance by group:\n\nAUC by demographic group\nAccuracy by group\n\nError rates by group:\n\nFalse Positive Rate (FPR)\nFalse Negative Rate (FNR)\nIs one group experiencing more errors?\n\nThreshold impact:\n\nSame threshold affects groups differently\nConsider group-specific thresholds?\n\nBase rates:\n\nAre outcome rates different across groups?\nThis affects what “fair” means\n\n\n\n\nRed Flags\n\nLarge differences in FPR across groups (disparate impact)\nOne group has much lower sensitivity (missed opportunities)\nOne group has much lower specificity (unjust interventions)\nAUC differs substantially by group (model works differently)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#framework-for-threshold-selection",
+    "href": "notes/week-10-notes.html#framework-for-threshold-selection",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Framework for Threshold Selection",
+    "text": "Framework for Threshold Selection\n\nStep 1: Understand the Consequences\nAsk: - What happens with a false positive? - What happens with a false negative? - Are costs symmetric or asymmetric?\nExample: Criminal bail decision - False Positive: Deny bail to someone who would appear - Cost: Unjust detention, lost income, family disruption - False Negative: Grant bail to someone who won’t appear - Cost: Missed court date, resources to locate\n\n\nStep 2: Consider Stakeholder Perspectives\nAsk: - Who is affected by each type of error? - Do all groups experience consequences equally? - What are power dynamics?\nExample: Loan approval - False Positive (deny good borrower): - Individual: Can’t buy home, build wealth - Bank: Missed profit opportunity - False Negative (approve bad borrower): - Individual: Debt they can’t repay - Bank: Financial loss\n\n\nStep 3: Choose Your Metric Priority\nOptions: 1. Maximize sensitivity: Catch all positives (minimize FN) 2. Maximize specificity: Minimize false alarms (minimize FP) 3. Balance precision and recall: F1 score 4. Equalize across groups: Fairness-aware thresholds 5. Minimize expected cost: Cost-benefit analysis\n\n\nStep 4: Test Multiple Thresholds\nProcess: 1. Evaluate performance across range of thresholds (0.1 to 0.9) 2. Look at group-wise performance at each threshold 3. Consider sensitivity analysis (how robust is choice?) 4. Document trade-offs explicitly"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#cost-benefit-analysis-approach",
+    "href": "notes/week-10-notes.html#cost-benefit-analysis-approach",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Cost-Benefit Analysis Approach",
+    "text": "Cost-Benefit Analysis Approach\n\nAssigning Concrete Costs\nExample: Disease screening\n\n\n\nOutcome\nCost\nBenefit\n\n\n\n\nTrue Positive\nTreatment: $1,000\nPrevent complications: $50,000\n\n\nFalse Positive\nUnnecessary treatment: $1,000\nNone\n\n\nTrue Negative\nNone\nNone\n\n\nFalse Negative\nMiss disease\nLater complications: $50,000\n\n\n\n\n\nCalculate Expected Cost\n\\[E[\\text{Cost}] = C_{FP} \\times FP + C_{FN} \\times FN - B_{TP} \\times TP\\]\nChoose threshold that minimizes expected cost.\n\n\nLimitations\n\nAssumes we can quantify all costs (often impossible!)\nDoesn’t capture justice/equity concerns\nWho decides what costs matter?\nSome harms can’t be monetized (dignity, autonomy, trust)"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#practical-recommendations",
+    "href": "notes/week-10-notes.html#practical-recommendations",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Practical Recommendations",
+    "text": "Practical Recommendations\n\nBest Practices\n\nReport multiple metrics - not just accuracy\n\nSensitivity, specificity, precision, F1\nShow confusion matrix\nReport by sub-group\n\nShow the ROC curve - demonstrates trade-offs\n\nMakes threshold choice explicit\nShows range of possible performance\n\nTest multiple thresholds - document your choice\n\nWhy did you choose this threshold?\nWhat trade-offs did you accept?\n\nEvaluate by sub-group - check for disparate impact\n\nPerformance metrics by demographic group\nError rates by group\nConsider group-specific thresholds\n\nDocument assumptions - explain your reasoning\n\nWhat costs did you consider?\nWho did you consult?\nWhat alternatives did you consider?\n\nConsider context - real-world consequences matter\n\nWhat happens after prediction?\nCan decisions be appealed?\nIs there human oversight?\n\nProvide uncertainty - confidence intervals\n\nNot just point estimates\nShow prediction intervals\nAcknowledge limitations\n\nEnable recourse - can predictions be challenged?\n\nHow can someone contest a prediction?\nWhat information is provided?\nIs the process transparent?"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#fitting-logistic-regression",
+    "href": "notes/week-10-notes.html#fitting-logistic-regression",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Fitting Logistic Regression",
+    "text": "Fitting Logistic Regression\n\nThe Basic Model\nFormula:\noutcome ~ predictor1 + predictor2 + predictor3\nFamily: binomial (specifies logistic regression)\nLink: logit (default for binomial)\n\n\nMaking Predictions\nType options: - type = \"link\": Returns log-odds (linear predictor) - type = \"response\": Returns probabilities (what you usually want)\n\n\nExample Interpretation\nModel: Predicting loan default\n\n\n\n\n\n\n\n\n\nVariable\nCoefficient\nOdds Ratio\nInterpretation\n\n\n\n\n(Intercept)\n-5.2\n0.006\nVery low baseline odds\n\n\nIncome (per $1000)\n-0.15\n0.86\nEach $1000 income → 14% lower odds\n\n\nCredit score\n-0.02\n0.98\nEach point → 2% lower odds\n\n\nPrior defaults\n1.5\n4.48\nPrior default → 348% higher odds"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#common-pitfalls",
+    "href": "notes/week-10-notes.html#common-pitfalls",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Common Pitfalls",
+    "text": "Common Pitfalls\n\n1. Class Imbalance\nProblem: When one outcome is rare (e.g., 95% negative, 5% positive) - Model can achieve 95% accuracy by always predicting negative! - Sensitivity may be 0% (catches no positives)\nSolutions: - Don’t use accuracy as main metric - Focus on sensitivity/specificity/F1 - Consider resampling (SMOTE, undersampling) - Adjust decision threshold\n\n\n2. Perfect Separation\nProblem: When a predictor perfectly predicts outcome - Coefficients become infinite - Model fails to converge\nExample: Everyone with credit score &lt; 500 defaults, everyone ≥ 500 doesn’t\nSolutions: - Check for perfect predictors - Add regularization (ridge/lasso) - Remove problematic predictors\n\n\n3. Multicollinearity\nProblem: Predictors highly correlated with each other - Unstable coefficients - Hard to interpret individual effects\nExample: Including both income and home value (highly correlated)\nSolutions: - Check correlation matrix - Remove redundant predictors - Use principal components\n\n\n4. Overfitting\nProblem: Model learns training data too well, doesn’t generalize - High training accuracy, poor test accuracy - Complex models with many predictors\nSolutions: - Use cross-validation - Regularization (ridge/lasso) - Simplify model - Get more training data"
+  },
+  {
+    "objectID": "notes/week-10-notes.html#core-concepts",
+    "href": "notes/week-10-notes.html#core-concepts",
+    "title": "Week 10 Study Notes: Logistic Regression for Binary Outcomes",
+    "section": "Core Concepts",
+    "text": "Core Concepts\n\nLogistic regression predicts probabilities, not outcomes directly\n\nOutputs are always between 0 and 1\nUses logit transformation for linearity\n\nInterpreting coefficients requires care\n\nRaw coefficients are log-odds (hard to interpret)\nOdds ratios (exp(β)) are more intuitive\nOR &gt; 1 means positive relationship, OR &lt; 1 means negative\n\nThreshold choice is critical and subjective\n\nNo universal “right” threshold\nDepends on costs of false positives vs. false negatives\nMakes trade-offs explicit\n\nMultiple metrics matter\n\nAccuracy alone is insufficient (especially with imbalance)\nSensitivity, specificity, precision tell different stories\nROC curve shows all thresholds at once\n\nEquity requires active checking\n\nOverall accuracy can mask disparate impact\nError rates may differ across groups\nMust explicitly test for bias"
+  },
+  {
     "objectID": "notes/week-07-notes.html",
     "href": "notes/week-07-notes.html",
     "title": "Spatial Model Errors and Moran’s I",
@@ -837,7 +998,14 @@
     "href": "Assignemnt/assignment4_tim.html#part-3-spatial-features",
     "title": "Burglaries Prediction Analysis",
     "section": "Part 3: Spatial Features",
-    "text": "Part 3: Spatial Features\nIn this section, we address the potential spatial auto correlation by calculating sanitation violation’s most nearest neighbor and its closest distance to hotpots. The nearest neighbor was used to address the potential spatial influence of the nearest neighborhood; the distance to hotspot was used to address how the cluster of sanitation violations influence the sanitation violation in a sinngle cell. In the results, there are 215 hotpots of sanitation violations in total in Chicago\n\n\nCode\nlibrary(FNN)\nlibrary(spdep)\n#k-nearest neighbor\nnn_dist&lt;- get.knnx(\n  data = st_coordinates(sanitition_sf),      \n  query = st_coordinates(st_centroid(fishnet)), \n  k = 1                                          \n)\n\nfishnet$sanitition_nn &lt;- nn_dist$nn.dist[, 1]\n\n# Function to calculate Local Moran's I\ncalculate_local_morans &lt;- function(data, variable, k = 5) {\n  \n  # Create spatial weights\n  coords &lt;- st_coordinates(st_centroid(data))\n  neighbors &lt;- knn2nb(knearneigh(coords, k = k))\n  weights &lt;- nb2listw(neighbors, style = \"W\", zero.policy = TRUE)\n  \n  # Calculate Local Moran's I\n  local_moran &lt;- localmoran(data[[variable]], weights)\n  \n  # Classify clusters\n  mean_val &lt;- mean(data[[variable]], na.rm = TRUE)\n  \n  data %&gt;%\n    mutate(\n      local_i = local_moran[, 1],\n      p_value = local_moran[, 5],\n      is_significant = p_value &lt; 0.05,\n      \n      moran_class = case_when(\n        !is_significant ~ \"Not Significant\",\n        local_i &gt; 0 & .data[[variable]] &gt; mean_val ~ \"High-High\",\n        local_i &gt; 0 & .data[[variable]] &lt;= mean_val ~ \"Low-Low\",\n        local_i &lt; 0 & .data[[variable]] &gt; mean_val ~ \"High-Low\",\n        local_i &lt; 0 & .data[[variable]] &lt;= mean_val ~ \"Low-High\",\n        TRUE ~ \"Not Significant\"\n      )\n    )\n}\n\n# Apply to abandoned cars\nfishnet &lt;- calculate_local_morans(fishnet, \"counts\", k = 5)\n\n# Get centroids of \"High-High\" cells (hot spots)\nhotspots &lt;- fishnet %&gt;%\n  filter(moran_class == \"High-High\") %&gt;%\n  st_centroid()\n\n# Calculate distance from each cell to nearest hot spot\nif (nrow(hotspots) &gt; 0) {\n  fishnet &lt;- fishnet %&gt;%\n    mutate(\n      dist_to_hotspot = as.numeric(\n        st_distance(st_centroid(fishnet), hotspots %&gt;% st_union())\n      )\n    )\n  \n  cat(\"✓ Calculated distance to abandoned car hot spots\\n\")\n  cat(\"  - Number of hot spot cells:\", nrow(hotspots), \"\\n\")\n} else {\n  fishnet &lt;- fishnet %&gt;%\n    mutate(dist_to_hotspot = 0)\n  cat(\"⚠ No significant hot spots found\\n\")\n}\n\n\n✓ Calculated distance to abandoned car hot spots\n  - Number of hot spot cells: 316 \n\n\nCode\n# Visualize hot spots\nggplot() +\n  geom_sf(\n    data = fishnet, \n    aes(fill = moran_class), \n    color = NA\n  ) +\n  scale_fill_manual(\n    values = c(\n      \"High-High\" = \"#d7191c\",\n      \"High-Low\" = \"#fdae61\",\n      \"Low-High\" = \"#abd9e9\",\n      \"Low-Low\" = \"#2c7bb6\",\n      \"Not Significant\" = \"gray90\"\n    ),\n    name = \"Cluster Type\"\n  ) +\n  labs(\n    title = \"Local Moran's I: Sanitation Violations Clusters\",\n    subtitle = \"High-High = Hot spots of disorder\"\n  ) +\n  theme_crime()\n\n\n\n\n\n\n\n\n\nBased on the map above, both the north and middle of Chicago has a huge high-high cluster of sanitation violations, while the far south of the city, which is also the suburban area, has a low-low cluster of sanitation violations. ## Part 4: Count Regression Models In this section, I first ran the poisson regression, then I check the dispersion to see if the assumption of poisson regression still holds. The results suggest I to use negative binomial regression in the end. The AIC for negative binomial is also smaller than poisson, suggesting it a better model\n\n\nCode\n# Join district information to fishnet\nfishnet &lt;- st_join(\n  fishnet,\n  policeDistricts,\n  join = st_within,\n  left = TRUE\n) %&gt;%\n  filter(!is.na(District))  \n#clean and make the final model\nfishnet_model &lt;- fishnet %&gt;%\n  st_drop_geometry() %&gt;%\n  dplyr::select(\n    uniqueID,\n    District,\n    countBurglaries,\n    counts,\n    sanitition_nn,\n    dist_to_hotspot\n  ) %&gt;%\n  na.omit()  \n#poisson regression\nr1=glm(countBurglaries~counts+sanitition_nn+dist_to_hotspot,data = fishnet_model,family = poisson(link = \"log\"))\n\n\n\n\nCode\n# Calculate dispersion parameter\ndispersion &lt;- sum(residuals(r1, type = \"pearson\")^2) / \n              r1$df.residual\n\ncat(\"Dispersion parameter:\", round(dispersion, 2), \"\\n\")\n\n\nDispersion parameter: 2.36 \n\n\nCode\ncat(\"Rule of thumb: &gt;1.5 suggests overdispersion\\n\")\n\n\nRule of thumb: &gt;1.5 suggests overdispersion\n\n\nCode\nif (dispersion &gt; 1.5) {\n  cat(\"⚠ Overdispersion detected! Consider Negative Binomial model.\\n\")\n} else {\n  cat(\"✓ Dispersion looks okay for Poisson model.\\n\")\n}\n\n\n⚠ Overdispersion detected! Consider Negative Binomial model.\n\n\n\n\nCode\nlibrary(MASS)\n#as there is overdispersion, I use negative binomial model instead\nr2=glm.nb(countBurglaries~counts+sanitition_nn+dist_to_hotspot,data = fishnet_model)\n# Compare AIC (lower is better)\ncat(\"\\nModel Comparison:\\n\")\n\n\n\nModel Comparison:\n\n\nCode\ncat(\"Poisson AIC:\", round(AIC(r1), 1), \"\\n\")\n\n\nPoisson AIC: 7805.2 \n\n\nCode\ncat(\"Negative Binomial AIC:\", round(AIC(r2), 1), \"\\n\")\n\n\nNegative Binomial AIC: 7016.9 \n\n\nThe lower AIC for negative binomial regression suggest it is a better model"
+    "text": "Part 3: Spatial Features\nIn this section, we address the potential spatial auto correlation by calculating sanitation violation’s most nearest neighbor and its closest distance to hotpots. The nearest neighbor was used to address the potential spatial influence of the nearest neighborhood; the distance to hotspot was used to address how the cluster of sanitation violations influence the sanitation violation in a sinngle cell. In the results, there are 215 hotpots of sanitation violations in total in Chicago\n\n\nCode\nlibrary(FNN)\nlibrary(spdep)\n#k-nearest neighbor\nnn_dist&lt;- get.knnx(\n  data = st_coordinates(sanitition_sf),      \n  query = st_coordinates(st_centroid(fishnet)), \n  k = 1                                          \n)\n\nfishnet$sanitition_nn &lt;- nn_dist$nn.dist[, 1]\n\n# Function to calculate Local Moran's I\ncalculate_local_morans &lt;- function(data, variable, k = 5) {\n  \n  # Create spatial weights\n  coords &lt;- st_coordinates(st_centroid(data))\n  neighbors &lt;- knn2nb(knearneigh(coords, k = k))\n  weights &lt;- nb2listw(neighbors, style = \"W\", zero.policy = TRUE)\n  \n  # Calculate Local Moran's I\n  local_moran &lt;- localmoran(data[[variable]], weights)\n  \n  # Classify clusters\n  mean_val &lt;- mean(data[[variable]], na.rm = TRUE)\n  \n  data %&gt;%\n    mutate(\n      local_i = local_moran[, 1],\n      p_value = local_moran[, 5],\n      is_significant = p_value &lt; 0.05,\n      \n      moran_class = case_when(\n        !is_significant ~ \"Not Significant\",\n        local_i &gt; 0 & .data[[variable]] &gt; mean_val ~ \"High-High\",\n        local_i &gt; 0 & .data[[variable]] &lt;= mean_val ~ \"Low-Low\",\n        local_i &lt; 0 & .data[[variable]] &gt; mean_val ~ \"High-Low\",\n        local_i &lt; 0 & .data[[variable]] &lt;= mean_val ~ \"Low-High\",\n        TRUE ~ \"Not Significant\"\n      )\n    )\n}\n\n# Apply to abandoned cars\nfishnet &lt;- calculate_local_morans(fishnet, \"counts\", k = 5)\n\n# Get centroids of \"High-High\" cells (hot spots)\nhotspots &lt;- fishnet %&gt;%\n  filter(moran_class == \"High-High\") %&gt;%\n  st_centroid()\n\n# Calculate distance from each cell to nearest hot spot\nif (nrow(hotspots) &gt; 0) {\n  fishnet &lt;- fishnet %&gt;%\n    mutate(\n      dist_to_hotspot = as.numeric(\n        st_distance(st_centroid(fishnet), hotspots %&gt;% st_union())\n      )\n    )\n  \n  cat(\"✓ Calculated distance to abandoned car hot spots\\n\")\n  cat(\"  - Number of hot spot cells:\", nrow(hotspots), \"\\n\")\n} else {\n  fishnet &lt;- fishnet %&gt;%\n    mutate(dist_to_hotspot = 0)\n  cat(\"⚠ No significant hot spots found\\n\")\n}\n\n\n✓ Calculated distance to abandoned car hot spots\n  - Number of hot spot cells: 316 \n\n\nCode\n# Visualize hot spots\nggplot() +\n  geom_sf(\n    data = fishnet, \n    aes(fill = moran_class), \n    color = NA\n  ) +\n  scale_fill_manual(\n    values = c(\n      \"High-High\" = \"#d7191c\",\n      \"High-Low\" = \"#fdae61\",\n      \"Low-High\" = \"#abd9e9\",\n      \"Low-Low\" = \"#2c7bb6\",\n      \"Not Significant\" = \"gray90\"\n    ),\n    name = \"Cluster Type\"\n  ) +\n  labs(\n    title = \"Local Moran's I: Sanitation Violations Clusters\",\n    subtitle = \"High-High = Hot spots of disorder\"\n  ) +\n  theme_crime()\n\n\n\n\n\n\n\n\n\nBased on the map above, both the north and middle of Chicago has a huge high-high cluster of sanitation violations, while the far south of the city, which is also the suburban area, has a low-low cluster of sanitation violations."
+  },
+  {
+    "objectID": "Assignemnt/assignment4_tim.html#part-4-count-regression-models",
+    "href": "Assignemnt/assignment4_tim.html#part-4-count-regression-models",
+    "title": "Burglaries Prediction Analysis",
+    "section": "Part 4: Count Regression Models",
+    "text": "Part 4: Count Regression Models\nIn this section, I first ran the poisson regression, then I check the dispersion to see if the assumption of poisson regression still holds. The results suggest I to use negative binomial regression in the end. The AIC for negative binomial is also smaller than poisson, suggesting it a better model\n\n\nCode\n# Join district information to fishnet\nfishnet &lt;- st_join(\n  fishnet,\n  policeDistricts,\n  join = st_within,\n  left = TRUE\n) %&gt;%\n  filter(!is.na(District))  \n#clean and make the final model\nfishnet_model &lt;- fishnet %&gt;%\n  st_drop_geometry() %&gt;%\n  dplyr::select(\n    uniqueID,\n    District,\n    countBurglaries,\n    counts,\n    sanitition_nn,\n    dist_to_hotspot\n  ) %&gt;%\n  na.omit()  \n#poisson regression\nr1=glm(countBurglaries~counts+sanitition_nn+dist_to_hotspot,data = fishnet_model,family = poisson(link = \"log\"))\n\n\n\n\nCode\n# Calculate dispersion parameter\ndispersion &lt;- sum(residuals(r1, type = \"pearson\")^2) / \n              r1$df.residual\n\ncat(\"Dispersion parameter:\", round(dispersion, 2), \"\\n\")\n\n\nDispersion parameter: 2.36 \n\n\nCode\ncat(\"Rule of thumb: &gt;1.5 suggests overdispersion\\n\")\n\n\nRule of thumb: &gt;1.5 suggests overdispersion\n\n\nCode\nif (dispersion &gt; 1.5) {\n  cat(\"⚠ Overdispersion detected! Consider Negative Binomial model.\\n\")\n} else {\n  cat(\"✓ Dispersion looks okay for Poisson model.\\n\")\n}\n\n\n⚠ Overdispersion detected! Consider Negative Binomial model.\n\n\n\n\nCode\nlibrary(MASS)\n#as there is overdispersion, I use negative binomial model instead\nr2=glm.nb(countBurglaries~counts+sanitition_nn+dist_to_hotspot,data = fishnet_model)\n# Compare AIC (lower is better)\ncat(\"\\nModel Comparison:\\n\")\n\n\n\nModel Comparison:\n\n\nCode\ncat(\"Poisson AIC:\", round(AIC(r1), 1), \"\\n\")\n\n\nPoisson AIC: 7805.2 \n\n\nCode\ncat(\"Negative Binomial AIC:\", round(AIC(r2), 1), \"\\n\")\n\n\nNegative Binomial AIC: 7016.9 \n\n\nThe lower AIC for negative binomial regression suggest it is a better model"
   },
   {
     "objectID": "Assignemnt/assignment4_tim.html#part-5-spatial-cross-validation",
@@ -1314,6 +1482,97 @@
     "title": "Tim Wen - Week 6 Notes: Spatial Regression",
     "section": "What This Tells Us About Boston’s Housing Market",
     "text": "What This Tells Us About Boston’s Housing Market\n\n1. Market Segmentation\nBoston operates as two distinct housing markets: - Luxury market: Every sq ft is premium (~$1081/sq ft)\n- Standard market: Space valued, but lower premium (~$96/sq ft)\n\n\n2. Affordability Crisis\n\nThe interaction amplifies inequality\n\nLarge homes in wealthy areas become exponentially more expensive\n\nCreates barriers to mobility between neighborhoods\n\n\n\n3. Policy Design\n\nOne-size-fits-all policies may fail\n\nProperty tax assessments should account for neighborhood-specific valuation\n\nHousing assistance needs vary dramatically by area"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#what-is-dirty-data",
+    "href": "notes/week-09-notes.html#what-is-dirty-data",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "What is “Dirty Data”?",
+    "text": "What is “Dirty Data”?\nTraditional Definition: Missing, incorrect, or non-standardized data\nExtended Definition (Richardson et al. 2019): Data derived from or influenced by corrupt, biased, and unlawful practices, including:\n\nIntentionally manipulated data (“juking the stats”)\nData distorted by individual and societal biases\nData from unconstitutional policing practices"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#forms-of-dirty-data",
+    "href": "notes/week-09-notes.html#forms-of-dirty-data",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Forms of Dirty Data",
+    "text": "Forms of Dirty Data\n\n1. Fabricated/Manipulated Data\n\nFalse arrests with planted evidence\nDowngraded crime classifications to meet targets\nPressuring victims not to file reports\n\n\n\n2. Systematically Biased Data\n\nOver-policing of certain communities → more recorded “crime”\nUnder-policing of white-collar crime → appears less common\nRacial profiling → disproportionate stops/arrests\n\n\n\n3. Missing/Incomplete Data\n\nUnreported crimes (especially in over-policed areas)\nIgnored complaints\nIncomplete records\n\n\n\n4. Proxy Problems\n\nArrests ≠ crimes committed\nCalls for service ≠ actual need\nGang database ≠ actual gang membership"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#the-confirmation-bias-cycle",
+    "href": "notes/week-09-notes.html#the-confirmation-bias-cycle",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "The Confirmation Bias Cycle",
+    "text": "The Confirmation Bias Cycle\nAlgorithm learns: \"Crime happens in neighborhood X\"\n           ↓\nPolice sent to neighborhood X\n           ↓\nMore arrests in neighborhood X (regardless of actual crime)\n           ↓\nAlgorithm \"confirmed\": \"We were right about neighborhood X!\"\n           ↓\nCycle intensifies"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#what-gets-policed-vs.-what-gets-committed",
+    "href": "notes/week-09-notes.html#what-gets-policed-vs.-what-gets-committed",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "What Gets Policed vs. What Gets Committed",
+    "text": "What Gets Policed vs. What Gets Committed\n\n\n\nCrime Type\nFrequency\nPolicing Intensity\nIn Models?\n\n\n\n\nViolent Crime\nModerate\nHigh\n✓ Yes\n\n\nProperty Crime\nHigh\nHigh\n✓ Yes\n\n\nDrug Offenses\nVery High\nRacially Disparate\nSometimes\n\n\nWhite-Collar Crime\nVery High\nVery Low\n✗ Rarely\n\n\nWage Theft\nExceeds all robbery\nAlmost None\n✗ Never\n\n\nCorporate Fraud\n$300B+ annually\nMinimal\n✗ Never"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#spatial-data-structure-fishnet-grid",
+    "href": "notes/week-09-notes.html#spatial-data-structure-fishnet-grid",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Spatial Data Structure: Fishnet Grid",
+    "text": "Spatial Data Structure: Fishnet Grid\n\nWhy Use a Fishnet Grid?\n\nConsistent cell size (e.g., 500m × 500m)\nNo boundary bias\nStandard approach in predictive policing"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#local-spatial-autocorrelation-local-morans-i",
+    "href": "notes/week-09-notes.html#local-spatial-autocorrelation-local-morans-i",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Local Spatial Autocorrelation (Local Moran’s I)",
+    "text": "Local Spatial Autocorrelation (Local Moran’s I)\n\nGlobal vs. Local Measures\nGlobal Moran’s I: - One value for entire study area - Answers: “Is there spatial clustering overall?” - Range: -1 to +1\nLocal Moran’s I: - One value per location - Answers: “Where are the clusters?” - Identifies specific hotspots and coldspots\n\n\nThe Four Types of Clusters\n\n\n\nType\nLocation Value\nNeighbor Values\nInterpretation\n\n\n\n\nHigh-High\nAbove mean\nAbove mean\nHotspot\n\n\nLow-Low\nBelow mean\nBelow mean\nColdspot\n\n\nHigh-Low\nAbove mean\nBelow mean\nOutlier (isolated high)\n\n\nLow-High\nBelow mean\nAbove mean\nOutlier (isolated low)"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#count-regression-models",
+    "href": "notes/week-09-notes.html#count-regression-models",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Count Regression Models",
+    "text": "Count Regression Models\n\nWhy Not OLS (Linear Regression)?\nProblems with linear regression for count data: 1. Can predict negative values (impossible) 2. Assumes constant variance (counts have variance ≠ mean) 3. Assumes continuous outcome (counts are discrete) 4. Assumes normal errors (count data is skewed)\n\n\nPoisson Regression\nModel: \\[\\log(\\lambda_i) = \\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + ... + \\beta_p X_{pi}\\]\nEquivalently: \\[\\lambda_i = \\exp(\\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + ... + \\beta_p X_{pi})\\]\nKey Property: Mean = Variance = λ\n\n\nInterpreting Coefficients\n\n\n\nβ\nexp(β)\nInterpretation\n\n\n\n\n0.14\n1.15\n15% increase per unit of X\n\n\n-0.22\n0.80\n20% decrease per unit of X\n\n\n0.00\n1.00\nNo effect\n\n\n0.69\n2.00\nDoubling per unit of X\n\n\n\n\n\nThe Overdispersion Problem\nPoisson Assumption: Variance = Mean\nReality: Variance &gt; Mean (often MUCH larger)\nCheck for Overdispersion: \\[\\text{Dispersion} = \\frac{\\text{Residual Deviance}}{\\text{Degrees of Freedom}}\\]\n\nIf ≈ 1: Poisson is fine\nIf &gt; 1: Overdispersion\nIf &gt; 2-3: Serious overdispersion → Use Negative Binomial\n\n\n\nNegative Binomial Regression\nRelaxes the variance = mean assumption: \\[\\text{Var}(Y_i) = \\mu_i + \\alpha \\mu_i^2\\]"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#spatial-cross-validation",
+    "href": "notes/week-09-notes.html#spatial-cross-validation",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Spatial Cross-Validation",
+    "text": "Spatial Cross-Validation\n\nWhy Standard CV Fails for Spatial Data\nProblem: Nearby observations are correlated - Training set includes cells adjacent to test cells - Spatial leakage: Model learns from neighbors - Overly optimistic performance estimates\n\n\nLeave-One-Group-Out (LOGO) CV\nProcess: 1. Divide study area into groups (e.g., police districts) 2. Hold out all cells in District 1 3. Train model on Districts 2-N 4. Predict for District 1 5. Repeat for each district"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#baseline-comparison-kernel-density-estimation",
+    "href": "notes/week-09-notes.html#baseline-comparison-kernel-density-estimation",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Baseline Comparison: Kernel Density Estimation",
+    "text": "Baseline Comparison: Kernel Density Estimation\n\nWhy Compare to KDE?\n\nSimplest spatial prediction method\nNo predictors, just past locations\nIf our model doesn’t beat KDE, we’re wasting complexity"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#questions-to-ask-about-any-predictive-policing-system",
+    "href": "notes/week-09-notes.html#questions-to-ask-about-any-predictive-policing-system",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Questions to Ask About Any Predictive Policing System",
+    "text": "Questions to Ask About Any Predictive Policing System\n\n1. Data Provenance\n\nWhat time period does training data cover?\nWere there civil rights investigations during that period?\nWere there documented cases of data manipulation?\nWhat evidence exists that data is accurate?\n\n\n\n2. Variable Selection\n\nWhat specific variables are used?\nHow might each variable embed bias?\nWhat’s excluded and why?\nWho made these choices?\n\n\n\n3. Validation\n\nHow is accuracy measured?\nWhat counts as “success”?\nAre error rates reported by neighborhood?\nWho experiences false positives vs. false negatives?\n\n\n\n4. Deployment\n\nHow do predictions translate to action?\nWhat discretion do officers have?\nAre social services actually offered?\nWhat are the measurable outcomes?\n\n\n\n5. Transparency & Accountability\n\nIs the methodology public?\nCan community members access their own “risk scores”?\nIs there a process to challenge predictions?\nWho monitors for disparate impact?\n\n\n\n6. Alternatives\n\nWhat non-punitive interventions were considered?\nCould these resources address root causes instead?\nWhat would actual community safety investment look like?"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#false-positives-predicted-high-risk-no-crime-occurs",
+    "href": "notes/week-09-notes.html#false-positives-predicted-high-risk-no-crime-occurs",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "False Positives (Predicted High Risk, No Crime Occurs)",
+    "text": "False Positives (Predicted High Risk, No Crime Occurs)\nCost to individuals: - Increased police presence/harassment - Stops, searches without cause - Trauma, stress - Normalized surveillance\nCost to communities: - Broken trust with police - Reduced reporting of actual crimes - Economic harm - Quality of life degradation"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#false-negatives-predicted-low-risk-crime-occurs",
+    "href": "notes/week-09-notes.html#false-negatives-predicted-low-risk-crime-occurs",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "False Negatives (Predicted Low Risk, Crime Occurs)",
+    "text": "False Negatives (Predicted Low Risk, Crime Occurs)\nCost to individuals: - Inadequate police response - Victimization - Property loss\nCost to communities: - Unequal protection - Perception of being “written off” - Actual under-policing\nWho experiences each? - Both false positives AND false negatives disproportionately affect Black/Brown communities"
+  },
+  {
+    "objectID": "notes/week-09-notes.html#predictive-models-for-justice-not-policing",
+    "href": "notes/week-09-notes.html#predictive-models-for-justice-not-policing",
+    "title": "Week 9 Study Notes: Critical Perspectives on Predictive Policing",
+    "section": "Predictive Models for Justice, Not Policing",
+    "text": "Predictive Models for Justice, Not Policing\nInstead of predicting crime → deploy police\nConsider predicting: 1. Eviction risk → Provide legal aid proactively 2. Health crisis → Deploy community health workers 3. School dropout → Intensive support services 4. Food insecurity → Expand access programs\nKey differences: - Predictions lead to help, not punishment - False positives = extra support (lower harm) - Builds trust instead of eroding it - Addresses root causes"
   },
   {
     "objectID": "presentation/presentation.html#project-intention",
