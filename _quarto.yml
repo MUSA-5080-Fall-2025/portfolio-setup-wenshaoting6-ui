@@ -42,6 +42,8 @@ website:
             text: Mid Term
           - href: Assignemnt/assignment4_tim.qmd
             text: Assignment 4
+          - href: Assignemnt/appendix.qmd
+            text: Final Project
       - text: mid term slides  
         menu:
           - href: presentation/presentation.qmd
