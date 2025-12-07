@@ -58,8 +58,8 @@ library(here)
 library(knitr)
 options(tigris_use_cache = TRUE, tigris_progress = FALSE) 
 # Load spatial data
-pa_counties <- st_read(here("C:/Users/wensh/Desktop/MUSA5080/week-04/data/Pennsylvania_County_Boundaries.shp"))
-hospitals <- st_read(here("C:/Users/wensh/Desktop/MUSA5080/week-04/data/hospitals.geojson"))
+pa_counties <- st_read(here("data/Pennsylvania_County_Boundaries.shp"))
+hospitals <- st_read(here("data/hospitals.geojson"))
 census_tracts <- tracts(state = "PA", cb = TRUE)
 
 # Check that all data loaded correctly

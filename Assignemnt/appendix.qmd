@@ -261,7 +261,7 @@ philly_tract_sf=philly_tract%>%
   select(GEOID,geometry)
 ```
 ```{r}
-philly_tract_data=read.csv("data/philly_tract_data.csv")
+philly_tract_data=read.csv(here("data/philly_tract_data.csv"))
 
 philly_tract=tracts( state = 'PA',
                      county = '101',
