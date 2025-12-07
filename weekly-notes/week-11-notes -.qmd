@@ -1,0 +1,102 @@
+---
+title: "Week 11: Space-Time Prediction Notes"
+subtitle: "Bike Share Demand Forecasting"
+date: 2025-12-07
+format: html
+---
+
+## Core Concept
+
+**Panel data** = same units (stations) observed repeatedly over time. Each row represents a station-hour combination with features and outcomes.
+
+## Why This Matters for Policy
+
+**Operational question:** "At 6:00 AM, which stations will run out of bikes by 8:00 AM?"
+
+- Can't wait for stations to empty—must predict demand 1-2 hours ahead
+- Need to optimize rebalancing truck routes based on forecasts
+- Predictions enable proactive operations vs reactive response
+
+## Key Differences from Previous Work
+
+| Previous (Cross-sectional) | This Week (Panel) |
+|---------------------------|-------------------|
+| One snapshot in time | Repeated observations |
+| Spatial features (crimes nearby) | Temporal features (demand last hour) |
+| Spatial fixed effects | Station fixed effects + temporal lags |
+
+## Critical: Temporal Validation
+
+**WRONG:** Train on weeks 3-4, test on weeks 1-2 (predicting past with future)
+
+**CORRECT:** Train on weeks 1-2, test on weeks 3-4 (predicting future with past)
+
+Must mirror real deployment: forecast tomorrow using yesterday's patterns.
+
+## Building Complete Panels
+
+Problem: Not every station has trips every hour → missing observations break lag calculations
+
+**Solution:** Use `expand.grid()` to create every station-hour combination, then fill missing values with 0.
+
+```r
+study.panel <- expand.grid(
+  interval60 = unique(dat$interval60),
+  from_station_id = unique(dat$from_station_id)
+) %>%
+  left_join(actual_counts) %>%
+  mutate(Trip_Count = replace_na(Trip_Count, 0))
+```
+
+## Temporal Lags
+
+Past demand predicts future demand:
+
+- `lag1Hour`: Short-term persistence
+- `lag3Hours`: Medium-term trends  
+- `lag12Hours`: Half-day cycle (AM vs PM)
+- `lag1day`: Daily periodicity (same time yesterday)
+
+Must calculate **within each station** after sorting by station and time.
+
+## Model Progression
+
+1. **Baseline:** Time + Weather only
+2. **+ Temporal lags:** Add lag1Hour, lag1day, lag3Hours
+3. **+ Spatial features:** Demographics, location
+4. **+ Station fixed effects:** Station-specific baselines (dummy for each station)
+5. **+ Holiday effects:** Memorial Day weekend adjustments
+
+Biggest improvement typically comes from adding temporal lags.
+
+## Error Analysis Questions
+
+- **When** are predictions most wrong? (rush hour, weekends)
+- **Where** are errors concentrated? (downtown, tourist areas)
+- **Who** experiences worse service due to prediction errors?
+- **Equity concern:** Do errors disproportionately affect lower-income neighborhoods?
+
+## Evaluation: MAE
+
+Mean Absolute Error = average prediction error in same units as outcome
+
+**Example:** MAE = 5 means predictions typically off by ±5 trips
+
+Lower MAE = better predictions
+
+## Policy Implications
+
+- **Operational:** Rebalance during low-demand periods (overnight)
+- **Infrastructure:** Persistent errors suggest need for more stations or capacity
+- **Equity:** Are we reinforcing unequal service quality across neighborhoods?
+- **Deployment:** Is "good enough" accuracy actually good enough for fair operations?
+
+## When to Use Panel Data
+
+Anytime you have same units observed repeatedly:
+
+- Transit ridership over time
+- Crime patterns by beat over months  
+- Rent changes by neighborhood over years
+- School performance over academic years
+- Air quality at monitoring sites over days
