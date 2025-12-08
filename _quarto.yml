@@ -48,9 +48,9 @@ website:
             text: Final Project
       - text: Slides 
         menu:
-          - href: presentation/presentation.qmd
+          - href: present/presentation.qmd
             text: Mid-term Presentation
-          - href: presentation/finalpresentation.qmd
+          - href: present/finalpresentation.qmd
             text: Final Presentation
 
             
