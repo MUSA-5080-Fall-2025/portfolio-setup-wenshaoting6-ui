@@ -50,7 +50,7 @@ website:
         menu:
           - href: presentation/presentation.qmd
             text: Mid-term Presentation
-          - href: presentation.emd
+          - href: presentation.qmd
             text: Final Presentation
 
             
