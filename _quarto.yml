@@ -50,8 +50,8 @@ website:
         menu:
           - href: presentation/presentation.qmd
             text: Mid-term Presentation
-      - href: presentation.qmd
-        text: Final Presentation
+          - href: presentation/finalpresentation.qmd
+            text: Final Presentation
 
             
 format:
