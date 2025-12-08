@@ -1,6 +1,7 @@
 ---
 format:
   revealjs:
+    embed-resources: false
     theme: default
     transition: fade
     transition-speed: fast
